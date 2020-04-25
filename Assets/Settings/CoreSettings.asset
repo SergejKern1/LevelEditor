@@ -1,0 +1,48 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e96d7f35037cd83488174a7e5bf842af, type: 3}
+  m_Name: CoreSettings
+  m_EditorClassIdentifier: 
+  ExtraDefinesForCore:
+  - CORE_ED_INSPECTOR_TRANSFORM
+  - CORE_ED_CREATE_ASSET_MENU_GEN_CONF
+  - CORE_ED_MENU_GUID_TOOL
+  - CORE_ED_NAV_HISTORY
+  - CORE_ED_MENU_CREATE_POOL
+  MenuStrings: {fileID: 5499718483862177424}
+--- !u!114 &5499718483862177424
+MonoBehaviour:
+  m_ObjectHideFlags: 3
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b529299056e707946a386e2c3be3fc1a, type: 3}
+  m_Name: MenuStrings(Clone)
+  m_EditorClassIdentifier: 
+  Folder: {fileID: 102900000, guid: 05cf3973e7692d246ac3b69a3a12c012, type: 3}
+  FileName: MenuStrings
+  Template: {fileID: 4900000, guid: 20015278f1fedb347ac4f7e309fae424, type: 3}
+  ReplaceArgsEnum:
+    m_classRef: Core.Editor.MenuStringNames, SK.Core.Editor
+  ReplaceArgs:
+  - Tools
+  - Tools
+  - Regenerate GUIDs
+  - Pool/Create PoolSettings
+  - Guid-Tool %&g
+  - Navigation History/Window %&n
+  - Navigation History/Navigate Forth &y
+  - Navigation History/Navigate Back &z
+  - Navigation History/Window
