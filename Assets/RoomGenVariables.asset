@@ -1,0 +1,47 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2f145690ff61e014aab6295703d75cb1, type: 3}
+  m_Name: RoomGenVariables
+  m_EditorClassIdentifier: 
+  Variables:
+  - {fileID: 840613771059934576}
+  - {fileID: 5093361885710667068}
+--- !u!114 &840613771059934576
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2110c0b1419a8f843961e917651ff504, type: 3}
+  m_Name: CurrentPos
+  m_EditorClassIdentifier: 
+  m_value: {x: 0, y: 0, z: 0}
+  m_contextType: 1
+  m_editorOverrideValueTemporary: {x: 0, y: 0, z: 0}
+--- !u!114 &5093361885710667068
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e1e5587d11c8f64facc0f4fb910a31d, type: 3}
+  m_Name: Mesh
+  m_EditorClassIdentifier: 
+  m_value: {fileID: 0}
+  m_contextType: 1
+  m_editorOverrideValueTemporary: {fileID: 0}
