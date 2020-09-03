@@ -1,0 +1,47 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f7e79b0ca0b2ee041b32614a63b1c39f, type: 3}
+  m_Name: WallMeshesHard
+  m_EditorClassIdentifier: 
+  m_configData:
+  - Meshes: []
+  - Meshes:
+    - {fileID: 6337030661379939322, guid: 9c680562656633b4da7b285c686c6d69, type: 3}
+  - Meshes:
+    - {fileID: -1890376995711954348, guid: 45ab080c5edb514469d067fa7bf49116, type: 3}
+  - Meshes:
+    - {fileID: -1831032477101007522, guid: 79fe95c4468dadb4db2f7f55f7987076, type: 3}
+  - Meshes:
+    - {fileID: -190883689723014132, guid: cd3ecd1522fbd1646a3833d6478813ca, type: 3}
+  - Meshes:
+    - {fileID: -190883689723014132, guid: cd3ecd1522fbd1646a3833d6478813ca, type: 3}
+    - {fileID: 6337030661379939322, guid: 9c680562656633b4da7b285c686c6d69, type: 3}
+  - Meshes:
+    - {fileID: -6804248622013716315, guid: 186609813d188db44ac7844e469af50e, type: 3}
+  - Meshes:
+    - {fileID: -7940449400299438962, guid: 3790cde320106e041a82c8083d9f59c7, type: 3}
+  - Meshes:
+    - {fileID: 2827107330972309578, guid: b359344d753a6924ba437fb07b9d0389, type: 3}
+  - Meshes:
+    - {fileID: -5315990317819259989, guid: 2ae07f7e579fa774191b08b30a6903f7, type: 3}
+  - Meshes:
+    - {fileID: 2827107330972309578, guid: b359344d753a6924ba437fb07b9d0389, type: 3}
+    - {fileID: -1890376995711954348, guid: 45ab080c5edb514469d067fa7bf49116, type: 3}
+  - Meshes:
+    - {fileID: 5236432262644040853, guid: 36a5e275c435e2d41912314d3af3426e, type: 3}
+  - Meshes:
+    - {fileID: 3350528017931485470, guid: 231af25836417764aa777bbb6b0e9710, type: 3}
+  - Meshes:
+    - {fileID: 7464746071531905420, guid: 1a15b7bbc55196b47a8a0183718fe320, type: 3}
+  - Meshes:
+    - {fileID: -3489899130216257504, guid: 326cd901d53fdb847bef739f723a4337, type: 3}
+  - Meshes: []

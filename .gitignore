@@ -5,6 +5,7 @@
 # ===========================================
 
 /[Ll]ibrary/
+/[Uu]serSettings/
 /[Tt]emp/
 /[Oo]bj/
 /[Bb]uild/
@@ -67,12 +68,13 @@ ExportedObj/
 # =====================================
 # Maintainer
 # -------------------------------------
-[Aa]ssets/Plugins/CodeStage/
-[Aa]ssets/Plugins/CodeStage.meta
+[Aa]ssets/Plugins/CodeStage*
 [Pp]rojectSettings/MaintainerSettings.asset
 # -------------------------------------
 # Odin
 # -------------------------------------
-[Aa]ssets/Plugins/Sirenix/
-[Aa]ssets/Plugins/Sirenix.meta
-UserSettings/
+[Aa]ssets/Plugins/Sirenix*
+# -------------------------------------
+# Ludiq
+# -------------------------------------
+[Aa]ssets/Ludiq*

@@ -1,0 +1,21 @@
+# ProBuilder 4.2.3
+# https://unity3d.com/unity/features/worldbuilding/probuilder
+# 8/31/2020 8:28:23 PM
+
+mtllib ./TR.mtl
+o TR
+
+g TR
+v -0.5 0 0.5
+v 0 0 0.5
+v -0.5 0 0
+
+vt 1 1
+vt 0.5 1
+vt 1 0.5
+
+vn 0 1 0
+
+usemtl ProBuilderDefault
+f 3/3/1 1/1/1 2/2/1
+

@@ -56,12 +56,12 @@ namespace Level.Tiles.Actions
         public void Invoke()
         {
             var data = m_grid.Value;
-            for (var y = 0; y < data.GetLength(1)-m_reducedIteration.x; y++)
-            for (var x = 0; x < data.GetLength(0)-m_reducedIteration.y; x++)
+
+            for (var y = 0; y < data.GetLength(1)-m_reducedIteration.y; y++)
+            for (var x = 0; x < data.GetLength(0)-m_reducedIteration.x; x++)
             for (var z = 0; z < data.GetLength(2)-m_reducedIteration.z; z++)
             {
                 m_currentPosition.SetValue(new Vector3(x, y, z));
-                //Debug.Log($"Setting Value: {m_currentPosition.Value}");
                 m_continue.Invoke();
             }
             m_currentPosition.SetValue(new Vector3(-1, -1, -1));

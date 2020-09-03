@@ -1,0 +1,74 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 41fa004e0f21a514696d3481a493b73e, type: 3}
+  m_Name: SSelectHardMesh
+  m_EditorClassIdentifier: 
+  Enabled: 1
+  DebugName: 
+  GUIData:
+    UseColor: 0
+    GUIColor: {r: 1, g: 1, b: 1, a: 1}
+    Icon: {fileID: 0}
+  m_actions:
+  - {fileID: 6539377128295597935}
+  - {fileID: 5957669794825406595}
+  m_name: Select Hard Mesh
+--- !u!114 &5957669794825406595
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b27df996f18b3874d8228672f8cbe966, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Enabled: 1
+  DebugName: 
+  GUIData:
+    UseColor: 0
+    GUIColor: {r: 1, g: 1, b: 1, a: 1}
+    Icon: {fileID: 0}
+  m_meshConfig: {fileID: 11400000, guid: 4a131b08271966b43b1fb179139e03c4, type: 2}
+  m_meshConfigVar:
+    m_contextType: 0
+    m_scriptable: {fileID: 4407628577218460330, guid: e65abf8910d78e34d8a2ecee7bf4f02b,
+      type: 2}
+    m_contextProvider: {fileID: 0}
+    m_intrinsicValue: {fileID: 0}
+--- !u!114 &6539377128295597935
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b27df996f18b3874d8228672f8cbe966, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Enabled: 1
+  DebugName: 
+  GUIData:
+    UseColor: 0
+    GUIColor: {r: 1, g: 1, b: 1, a: 1}
+    Icon: {fileID: 0}
+  m_meshConfig: {fileID: 11400000, guid: 92527a1a7fb07ba49afe4298bb0e5890, type: 2}
+  m_meshConfigVar:
+    m_contextType: 0
+    m_scriptable: {fileID: 5960014168185503789, guid: e65abf8910d78e34d8a2ecee7bf4f02b,
+      type: 2}
+    m_contextProvider: {fileID: 0}
+    m_intrinsicValue: {fileID: 0}

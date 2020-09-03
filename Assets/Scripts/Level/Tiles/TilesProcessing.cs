@@ -4,11 +4,11 @@ namespace Level.Tiles
 {
     public static class TileProcessing
     {
-        // Iterating over a grid like counter-clockwise like this
+        // Iterating over a grid counter-clockwise like this
         // |3|2|
         // |0|1|
         public static Vector3Int[] IterationOffset { get; } = { Vector3Int.zero, 
-            new Vector3Int(1, 0, 0), new Vector3Int(0, 0, 1), new Vector3Int(1, 0, 1) };
+            new Vector3Int(1, 0, 0), new Vector3Int(1, 0, 1), new Vector3Int(0, 0, 1) };
 
         public struct ConfigurationResult
         {
@@ -27,7 +27,7 @@ namespace Level.Tiles
 
             ushort posVal = 1;
 
-            for (var i = 0; i <= IterationOffset.Length; ++i, posVal *= 2)
+            for (var i = 0; i < IterationOffset.Length; ++i, posVal *= 2)
             {
                 var off = IterationOffset[i];
                 var tile = tiles[x + off.x, y + off.y, z + off.z];

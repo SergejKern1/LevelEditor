@@ -1,25 +1,18 @@
 ﻿using System;
-using Core.Unity.Extensions;
 using Level.ScriptableUtility;
 using Level.Texture;
-using Level.Tiles;
 using ScriptableUtility;
 using ScriptableUtility.ActionConfigs;
 using ScriptableUtility.Actions;
-using ScriptableUtility.Variables.Reference;
-using ScriptableUtility.Variables.Scriptable;
 using UnityEngine;
 
 namespace Level.Actions
 {
     public class TextureTypeUVsForMeshUVs : ScriptableBaseAction
     {
-        [SerializeField] internal TilesSetListConfig m_sourceConfig;
         [SerializeField] internal LevelTextureConfig m_texConfig;
-
-        [SerializeField] internal ScriptableGrid m_grid;
-        [SerializeField] internal ScriptableVector3 m_currentPosition;
         [SerializeField] internal ScriptableMeshData m_meshData;
+        [SerializeField] internal ScriptableTilesSetFilter m_tileSetFilter;
 
         public override string Name => nameof(TextureTypeUVsForMeshUVs);
         public static Type StaticFactoryType => typeof(TextureTypeUVsForMeshUVsAction);
@@ -27,49 +20,35 @@ namespace Level.Actions
 
         public override IBaseAction CreateAction(IContext ctx)
         {
-            var grid = new GridReference(ctx, m_grid);
-            var currentPos = new Vector3Reference(ctx, m_currentPosition);
             var meshData = new MeshDataReference(ctx, m_meshData);
+            var tileSetFilter = new TilesSetFilterReference(ctx, m_tileSetFilter);
 
-            return new TextureTypeUVsForMeshUVsAction(m_sourceConfig, grid, currentPos, meshData, 
+            return new TextureTypeUVsForMeshUVsAction(meshData, tileSetFilter,
                 m_texConfig);
         }
     }
 
     public class TextureTypeUVsForMeshUVsAction : IDefaultAction
     {
-        readonly GridReference m_grid;
-        readonly Vector3Reference m_currentPos;
-
         readonly MeshDataReference m_meshData;
-        readonly TilesSetData m_texConfigSetData;
+        readonly TilesSetFilterReference m_tilesSetFilter;
+
         readonly LevelTextureConfig m_texConfig;
 
-        public TextureTypeUVsForMeshUVsAction(TilesSetListConfig sourceConfig, 
-            GridReference grid, 
-            Vector3Reference currentPos,
-            MeshDataReference mdr,
-            LevelTextureConfig testUVs)
+        public TextureTypeUVsForMeshUVsAction(MeshDataReference mdr,
+            TilesSetFilterReference tsf,
+            LevelTextureConfig texConf)
         {
-            m_grid = grid;
-            m_currentPos = currentPos;
-
             m_meshData = mdr;
-
-            m_texConfig = testUVs;
-            m_texConfigSetData = sourceConfig.GetSet(testUVs);
+            m_tilesSetFilter = tsf;
+            m_texConfig = texConf;
         }
 
         public void Invoke()
         {
-            var grid = m_grid.Value;
-            var pos = m_currentPos.Value.Vector3Int();
-            var tile = grid[pos.x, pos.y, pos.z];
-
-            var texType = m_texConfigSetData.GetTileIdx(tile);
             Vector2 uvStart = default;
             Vector2 uvEnd = default;
-            m_texConfig.GetFloorUVCoords(texType, 0, ref uvStart, ref uvEnd);
+            m_texConfig.GetFloorUVCoords(m_tilesSetFilter.Value.FilterIdx, 0, ref uvStart, ref uvEnd);
             UpdateUVs(uvStart, uvEnd);
         }
 

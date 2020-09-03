@@ -12,14 +12,23 @@ namespace Level.Tiles.MarchingSquares
         public int Count => 3;
 
         // todo: don't make me implement editor shit
-        public ITilesData this[int idx] => null;
+        public ITilesData this[int idx] => new HardEdgeTilesData(){ Name = ((HardEdgeState)idx).ToString() };
+
+        public struct HardEdgeTilesData : ITilesData
+        {
+            public string Name;
+
+            public string TileName => Name;
+            public Color TileColor => Color.white;
+            public Texture2D PreviewTex { get => null; set{} }
+        }
     }
 
-    [Flags]
     public enum HardEdgeState
     {
         Default = 0,
         Hard = 1,
-        Break = 2
+        Break = 2,
+        BreakAndHard = 3
     }
 }

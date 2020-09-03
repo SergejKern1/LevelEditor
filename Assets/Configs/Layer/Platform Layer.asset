@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 49cb72a27098cc34db648eae585e8f2a, type: 3}
+  m_Name: Platform Layer
+  m_EditorClassIdentifier: 
+  m_gridSize: 1
+  m_gridYSize: 1
+  m_tilesSet: {fileID: 11400000, guid: 809c494c0482f754ea3b2e5d89f15fe4, type: 2}
+  m_positionOffset: {x: 0, y: 0, z: 0}
+  m_position: {x: 0, y: 0}
+  m_size: {x: 8, y: 8}
+  m_tiles: 010001000500010001000100010005000500010001000000000001000000010001000500010000000000000004000000040001000100010001000400050004000400040001000100010001000100040004000000000001000100010001000100040004000500050001000100010001000100000005000100050005000100010001000100000005000500050005000100010001000100010001000100010001000100

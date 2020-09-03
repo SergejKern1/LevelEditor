@@ -19,6 +19,7 @@ namespace Editor.Level.PlatformLayer
 
         // ReSharper disable once InconsistentNaming
         new PlatformLayerScriptable target => base.target as PlatformLayerScriptable;
+        static PlatformLayerScriptableInspector m_currentInspector;
 
         static readonly SizeData k_roomSizeDat = new SizeData() { Size = new Vector3Int(int.MaxValue-1, int.MaxValue-1, int.MaxValue-1) };
 
@@ -35,6 +36,8 @@ namespace Editor.Level.PlatformLayer
 
         void OnEnable()
         {
+            if (m_currentInspector != null)
+                return;
             Init_SizePositionTools(m_showSizeTools, this);
 
             InitDebugData();
@@ -43,6 +46,7 @@ namespace Editor.Level.PlatformLayer
             m_tileDrawingData.Tiles = target;
             Init_TilesMode(ref m_tileDrawingData, this);
 
+            m_currentInspector = this;
             m_func = sceneView => OnSceneGUI();
             SceneView.duringSceneGui += m_func;
         }
@@ -65,13 +69,17 @@ namespace Editor.Level.PlatformLayer
             for (var i = 0; i < sets.Count; i++) m_debugData[i] = LoadDebugSettings(i);
         }
 
-        void OnDisable()
+        public void OnDisable()
         {
+            if (m_currentInspector!= this)
+                return;
             if (m_func == null)
                 return;
+
             // ReSharper disable once DelegateSubtraction
             SceneView.duringSceneGui -= m_func;
             m_func = null;
+            m_currentInspector = null;
         }
 
         public void OnSceneGUI()

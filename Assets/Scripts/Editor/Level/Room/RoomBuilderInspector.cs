@@ -92,6 +92,8 @@ namespace Editor.Level.Room
             m_previewMesh.vertices = target.MeshData.GlobalValue.Vertices.ToArray();
             m_previewMesh.uv = target.MeshData.GlobalValue.UVs.ToArray();
             m_previewMesh.triangles = target.MeshData.GlobalValue.Triangles.ToArray();
+            m_previewMesh.RecalculateNormals();
+            m_previewMesh.RecalculateTangents();
         }
 
         void InstantiatePreviewObjects()

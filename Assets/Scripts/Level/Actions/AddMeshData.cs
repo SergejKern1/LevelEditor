@@ -15,7 +15,7 @@ namespace Level.Actions
         [SerializeField] internal ScriptableGrid m_grid;
         [SerializeField] internal ScriptableVector3 m_currentPosition;
         [SerializeField] internal ScriptableMeshData m_meshData;
-        [SerializeField] internal Mesh m_mesh;
+        [SerializeField] internal ObjectReference m_meshVar;
         [SerializeField] internal Vector3 m_meshOffset;
         [SerializeField] internal Vector3 m_orientation;
 
@@ -29,8 +29,9 @@ namespace Level.Actions
             var currentPos = new Vector3Reference(ctx, m_currentPosition);
             var meshData = new MeshDataReference(ctx, m_meshData);
 
+            m_meshVar.Init(ctx);
             return new TileTypeToMeshAction(currentPos, meshData, 
-                m_mesh, m_meshOffset, Quaternion.Euler(m_orientation));
+                m_meshVar, m_meshOffset, Quaternion.Euler(m_orientation));
         }
     }
 
@@ -40,13 +41,13 @@ namespace Level.Actions
 
         readonly MeshDataReference m_meshData;
 
-        readonly Mesh m_mesh;
+        readonly ObjectReference m_mesh;
         readonly Vector3 m_meshOffset;
         readonly Quaternion m_orientation;
 
         public TileTypeToMeshAction(Vector3Reference currentPos,
             MeshDataReference mdr,
-            Mesh mesh, 
+            ObjectReference mesh, 
             Vector3 meshOffset,
             Quaternion orientation)
         {
@@ -70,15 +71,17 @@ namespace Level.Actions
             var uvs = md.UVs;
 
             var startCount = verts.Count;
-            foreach (var v in m_mesh.vertices)
+
+            var mesh = m_mesh.Value as Mesh;
+            foreach (var v in mesh.vertices)
             {
                 var rotatedV = m_orientation * v;
                 verts.Add(rotatedV + pos + m_meshOffset);
             }   
-            foreach (var t in m_mesh.triangles) 
+            foreach (var t in mesh.triangles) 
                 tris.Add(t + startCount);
 
-            uvs.AddRange(m_mesh.uv);
+            uvs.AddRange(mesh.uv);
         }
     }
 }

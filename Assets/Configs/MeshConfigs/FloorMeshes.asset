@@ -1,0 +1,48 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f7e79b0ca0b2ee041b32614a63b1c39f, type: 3}
+  m_Name: FloorMeshes
+  m_EditorClassIdentifier: 
+  m_configData:
+  - Meshes: []
+  - Meshes:
+    - {fileID: 2386389059514050866, guid: cbf3f9f4009a6664f9b9506d9580ba1d, type: 3}
+  - Meshes:
+    - {fileID: -8137693923328376559, guid: 785c572bcf506784fbc224763e9ef3f0, type: 3}
+  - Meshes:
+    - {fileID: -4909277789374002350, guid: fb15af848ca98b34e811ef1aaa06af3c, type: 3}
+  - Meshes:
+    - {fileID: -4698542606860246547, guid: dc07f630e0277dd4096606bed8a745c0, type: 3}
+  - Meshes:
+    - {fileID: 2470170464348394831, guid: c7ff2ea66f7b53940a76329b4b229468, type: 3}
+    - {fileID: 3983095471053241998, guid: b541e2c41dd7afe40b91319615ca040a, type: 3}
+  - Meshes:
+    - {fileID: -4693480790355496552, guid: 7a265aa34373f2d40bab6d28f7bea1dc, type: 3}
+  - Meshes:
+    - {fileID: -3713807586138177076, guid: cf27bd319c5f3494db88af543d653854, type: 3}
+  - Meshes:
+    - {fileID: -8030943999808816745, guid: 7532afde6f49b2f4d822abb40a154928, type: 3}
+  - Meshes:
+    - {fileID: 2658800326358589857, guid: 42b92de96d8201542b6f82d07fc9a95d, type: 3}
+  - Meshes:
+    - {fileID: 1282683621182336968, guid: 5ad325f3e21f47640be31686c78979d9, type: 3}
+    - {fileID: -8042781780260540165, guid: b13d2d4681a9c1c4bb363dfd3bd80d19, type: 3}
+  - Meshes:
+    - {fileID: -674519339066301288, guid: 3da519ee004c5294fbf3fea9f7613e74, type: 3}
+  - Meshes:
+    - {fileID: -2020707242700487084, guid: fd306fe8501ef1c41992f65fb2183cdf, type: 3}
+  - Meshes:
+    - {fileID: -3712505056476257173, guid: 4576fa4b1ee555142a92b95249188c91, type: 3}
+  - Meshes:
+    - {fileID: -3880534342755775209, guid: 3f47febbf1403ca4f83079b9f26cd504, type: 3}
+  - Meshes:
+    - {fileID: -6370391796498021690, guid: 3ea7d5c90cb7d4e468c306e827c628ec, type: 3}

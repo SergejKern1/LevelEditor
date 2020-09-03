@@ -24,7 +24,7 @@ namespace Level.Tiles.Actions
         [SerializeField] internal ScriptableVector3 m_currentPosition;
         [SerializeField] internal ScriptableTilesSetFilter m_currentTilesSetFilter;
 
-        [SerializeField] internal ScriptableBaseAction m_continueWith;
+        [SerializeField, HideInInspector] internal ScriptableBaseAction m_continueWith;
 
         public override string Name => nameof(TileTypeIterator);
         public static Type StaticFactoryType => typeof(TileTypeIteratorAction);
@@ -40,6 +40,10 @@ namespace Level.Tiles.Actions
             return new TileTypeIteratorAction(m_sourceConfig, m_iterateOnTileConfig.Result, m_filter,
                 grid, currentPos, filter, continueAction);
         }
+
+#if UNITY_EDITOR
+        public const string Editor_ContinueWithPropName = nameof(m_continueWith);
+#endif
     }
 
     public class TileTypeIteratorAction : IDefaultAction
@@ -99,7 +103,7 @@ namespace Level.Tiles.Actions
         {
             var grid = m_grid.Value;
             var pos = m_currentPos.Value.Vector3Int();
-            for (; startNode <= IterationOffset.Length; ++startNode)
+            for (; startNode < IterationOffset.Length; ++startNode)
             {
                 var off = IterationOffset[startNode];
                 var tile = grid[pos.x + off.x, pos.y + off.y, pos.z + off.z];
