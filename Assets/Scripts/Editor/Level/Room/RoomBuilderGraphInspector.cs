@@ -8,20 +8,20 @@ using ScriptableUtility.Actions;
 using ScriptableUtility.Editor.Actions;
 using UnityEditor;
 using UnityEngine;
+
 using static ScriptableUtility.Editor.CommonActionEditorGUI;
 
 namespace Editor.Level.Room
 {
-    [CustomEditor(typeof(RoomBuilder))]
-    public class RoomBuilderInspector : ScriptableBaseActionInspector, IEventListener<TileDrawing.TilesDrawn>
+    [CustomEditor(typeof(RoomBuilderGraph))]
+    public class RoomBuilderGraphInspector : ScriptableBaseActionInspector, IEventListener<TileDrawing.TilesDrawn>
     {
-        public static RoomBuilderInspector CurrentInspector;
+        public static RoomBuilderGraphInspector CurrentInspector;
 
         // ReSharper disable once InconsistentNaming
-        new RoomBuilder target => base.target as RoomBuilder;
+        new RoomBuilderGraph target => base.target as RoomBuilderGraph;
 
         ActionMenuData m_menu = ActionMenuData.Default;
-
         Vector2 m_scrollPos;
 
         ActionData m_actionData;
@@ -30,9 +30,21 @@ namespace Editor.Level.Room
         ContextComponent m_previewContext;
         Mesh m_previewMesh;
 
+        public override void Init()
+        {
+            base.Init();
+            InitActionDataDefault(out m_actionData, "Action", nameof(RoomBuilder.Action));
+            CreateMenu(ref m_menu, (data) => OnTypeSelected(m_actionData, data));
+
+            EventMessenger.AddListener<TileDrawing.TilesDrawn>(this);
+        }
+
+
         #region UnityMethods
         public override void OnDisable()
         {
+            base.OnDisable();
+
             ReleaseEditor(ref m_actionData);
             if (m_previewObject != null)
                 m_previewObject.DestroyEx();
@@ -107,14 +119,6 @@ namespace Editor.Level.Room
         }
         #endregion
 
-        public override void Init()
-        {
-            base.Init();
-            InitActionDataDefault(out m_actionData, "Action", nameof(RoomBuilder.Action));
-            CreateMenu(ref m_menu, (data) => OnTypeSelected(m_actionData, data));
-
-            EventMessenger.AddListener<TileDrawing.TilesDrawn>(this);
-        }
 
         public void OnEvent(TileDrawing.TilesDrawn eventType) => OnBuild();
     }

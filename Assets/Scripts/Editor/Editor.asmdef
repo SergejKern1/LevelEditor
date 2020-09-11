@@ -5,7 +5,12 @@
         "GUID:dafea55bbe41b6047aae7c4c31fe4cd4",
         "GUID:290c38e588b73f541b9abf10aab592db",
         "GUID:e691581b8a852ed45a950a2672f4aead",
-        "GUID:6ecbd77370484e14c9b0ec243cd76119"
+        "GUID:6ecbd77370484e14c9b0ec243cd76119",
+        "GUID:20deda0893a54d58983089010abfd6e1",
+        "GUID:b1934640ce394023bb4fd8eb2ea56a9a",
+        "GUID:e27f6b8b109640978457f36d34032dc6",
+        "GUID:b8e24fd1eb19b4226afebb2810e3c19b",
+        "GUID:002c1bbed08fa44d282ef34fd5edb138"
     ],
     "includePlatforms": [
         "Editor"
@@ -16,6 +21,12 @@
     "precompiledReferences": [],
     "autoReferenced": true,
     "defineConstraints": [],
-    "versionDefines": [],
+    "versionDefines": [
+        {
+            "name": "com.ludiq.peek",
+            "expression": "1.0.0",
+            "define": "LUDIQ_PEEK"
+        }
+    ],
     "noEngineReferences": false
 }

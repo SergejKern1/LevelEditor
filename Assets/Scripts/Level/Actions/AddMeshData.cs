@@ -6,18 +6,26 @@ using ScriptableUtility.Actions;
 using ScriptableUtility.Variables.Reference;
 using ScriptableUtility.Variables.Scriptable;
 using UnityEngine;
+using XNode;
+using XNode.Attributes;
 
 
 namespace Level.Actions
 {
     public class AddMeshData : ScriptableBaseAction
     {
-        [SerializeField] internal ScriptableGrid m_grid;
-        [SerializeField] internal ScriptableVector3 m_currentPosition;
-        [SerializeField] internal ScriptableMeshData m_meshData;
-        [SerializeField] internal ObjectReference m_meshVar;
-        [SerializeField] internal Vector3 m_meshOffset;
-        [SerializeField] internal Vector3 m_orientation;
+        [SerializeField, Input]
+        internal ScriptableGrid m_grid;
+        [SerializeField, Input]
+        internal ScriptableVector3 m_currentPosition;
+        [SerializeField, Input]
+        internal ScriptableMeshData m_meshData;
+        [SerializeField, Input]
+        internal ObjectReference m_meshVar;
+        [SerializeField, Input]
+        internal Vector3 m_meshOffset;
+        [SerializeField, Input]
+        internal Vector3 m_orientation;
 
         public override string Name => nameof(AddMeshData);
         public static Type StaticFactoryType => typeof(TileTypeToMeshAction);

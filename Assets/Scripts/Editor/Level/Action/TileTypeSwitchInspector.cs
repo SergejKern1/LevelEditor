@@ -41,7 +41,11 @@ namespace Editor.Level.Action
                 m_actionsList.CustomLabels[i] = new GUIContent(m_cacheTileConfig[i].TileName);
         }
 
-        void OnDisable() => ReleaseEditor(ref m_actionsList);
+        public override void OnDisable()
+        {
+            base.OnDisable();
+            ReleaseEditor(ref m_actionsList);
+        }
 
         public override void OnInspectorGUI()
         {

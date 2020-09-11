@@ -5,26 +5,34 @@ using Level.ScriptableUtility;
 using Level.Tiles.Interface;
 using ScriptableUtility;
 using ScriptableUtility.ActionConfigs;
+using ScriptableUtility.ActionConfigs.Attributes;
 using ScriptableUtility.Actions;
 using ScriptableUtility.Variables.Reference;
 using ScriptableUtility.Variables.Scriptable;
 using UnityEngine;
-
+using XNode.Attributes;
 using static Level.Tiles.TileProcessing;
 
 namespace Level.Tiles.Actions
 {
     public class TileTypeIterator : ScriptableBaseAction
     {
-        [SerializeField] internal TilesSetListConfig m_sourceConfig;
-        [SerializeField] internal RefITileConfig m_iterateOnTileConfig;
-        [SerializeField] internal TileTypeIdentifier[] m_filter;
+        [SerializeField, Input]
+        internal TilesSetListConfig m_sourceConfig;
+        [SerializeField, Input]
+        internal RefITileConfig m_iterateOnTileConfig;
+        [SerializeField, Input]
+        internal TileTypeIdentifier[] m_filter;
 
-        [SerializeField] internal ScriptableGrid m_grid;
-        [SerializeField] internal ScriptableVector3 m_currentPosition;
-        [SerializeField] internal ScriptableTilesSetFilter m_currentTilesSetFilter;
+        [SerializeField, Input]
+        internal ScriptableGrid m_grid;
+        [SerializeField, Input]
+        internal ScriptableVector3 m_currentPosition;
+        [SerializeField, Input]
+        internal ScriptableTilesSetFilter m_currentTilesSetFilter;
 
-        [SerializeField, HideInInspector] internal ScriptableBaseAction m_continueWith;
+        [SerializeField, HideInInspector, ActionOutput] 
+        internal ScriptableBaseAction m_continueWith;
 
         public override string Name => nameof(TileTypeIterator);
         public static Type StaticFactoryType => typeof(TileTypeIteratorAction);

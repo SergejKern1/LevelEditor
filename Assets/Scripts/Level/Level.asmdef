@@ -2,7 +2,8 @@
     "name": "Level",
     "references": [
         "GUID:3dc9fea223353c44fa545b55b3982d07",
-        "GUID:290c38e588b73f541b9abf10aab592db"
+        "GUID:290c38e588b73f541b9abf10aab592db",
+        "GUID:b8e24fd1eb19b4226afebb2810e3c19b"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

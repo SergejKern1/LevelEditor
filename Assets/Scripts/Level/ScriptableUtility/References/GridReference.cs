@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using ScriptableUtility;
 using ScriptableUtility.Variables;
 using UnityEngine;
+using XNode;
 
 namespace Level.ScriptableUtility
 {
@@ -64,6 +65,7 @@ namespace Level.ScriptableUtility
                 return cp?.Context;
             }
         }
+        public void __SetContext(IContext c) => m_context = c;
 
         public ushort[,,] IntrinsicValue
         {
@@ -96,42 +98,14 @@ namespace Level.ScriptableUtility
             }
         }
 
-        public static void Init(this ref GridReference @ref, IContext ctx)
-		{
-            if (@ref.ContextType != ReferenceContextType.Scriptable)
-                return;
+        public static void Init(this ref GridReference @ref, IContext ctx) => 
+            @ref = @ref.InitInternal<GridReference, ushort[,,]>(ctx);
+        public static void Init(this ref GridReference @ref, string fieldName, Node n, IContext ctx) => 
+            @ref = @ref.InitInternal<GridReference, ushort[,,]>(fieldName, n, ctx);
 
-            if (@ref.Scriptable == null)
-            {
-                Debug.LogError("Scriptable null!");
-                return;
-            }
-
-            if (@ref.Scriptable.ContextType == ScriptableContextType.GameObjectContext)
-                GridReference.SetContext(ref @ref, ctx);
-        }
-
-        public static GridReference SetValue(this ref GridReference @ref, ushort[,,] value)
+        public static GridReference SetValue(this ref GridReference @ref, ushort[,,] val)
         {
-            if (@ref.ContextType == ReferenceContextType.Intrinsic)
-            {
-                @ref.IntrinsicValue = value;
-                return @ref;
-            }
-
-            if (@ref.Scriptable == null)
-            {
-                Debug.LogError("Scriptable null!");
-                return default;
-            }
-
-            if (@ref.Scriptable.ContextType == ScriptableContextType.GlobalContext)
-                @ref.Scriptable.GlobalValue = value;
-            else if (@ref.Context != null)
-                @ref.Scriptable.SetWithContext(@ref.Context, value);
-            else
-                Debug.LogError("Context null!");
-
+            @ref = (GridReference) @ref.SetValueInternal(val);
             return @ref;
         }
     }

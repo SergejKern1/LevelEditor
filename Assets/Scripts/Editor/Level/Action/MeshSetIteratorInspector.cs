@@ -15,7 +15,11 @@ namespace Editor.Level.Action
         CommonActionEditorGUI.ActionMenuData m_menuData;
         CommonActionEditorGUI.ActionData m_actionData;
 
-        void OnDisable() => ReleaseEditor(ref m_actionData);
+        public override void OnDisable()
+        {
+            base.OnDisable();
+            ReleaseEditor(ref m_actionData);
+        }
 
         public override void Init()
         {

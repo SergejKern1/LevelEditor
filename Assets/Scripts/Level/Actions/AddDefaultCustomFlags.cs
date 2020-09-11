@@ -8,25 +8,37 @@ using ScriptableUtility.Actions;
 using ScriptableUtility.Variables.Reference;
 using ScriptableUtility.Variables.Scriptable;
 using UnityEngine;
+using XNode;
+using XNode.Attributes;
 using static Level.Tiles.TileProcessing;
 
 namespace Level.Tiles.Actions
 {
     public class AddDefaultCustomFlags : ScriptableBaseAction
     {
-        [SerializeField] internal TilesSetListConfig m_tilesSetListConfig;
-        [SerializeField] internal TileTypeIdentifier m_floorNode;
-        [SerializeField] internal LevelTextureConfig m_texTypeConfig;
+        [SerializeField, Input]
+        internal TilesSetListConfig m_tilesSetListConfig;
+        [SerializeField, Input]
+        internal TileTypeIdentifier m_floorNode;
+        [SerializeField, Input]
+        internal LevelTextureConfig m_texTypeConfig;
 
-        [SerializeField] internal TilesSetListConfig m_tilesEditConfig;
-        [SerializeField] internal HardEdgeConfig m_hardEdgeConfig;
-        [SerializeField] internal CountNodesConfig m_floorTexTypesConfig;
-        [SerializeField] internal CountNodesConfig m_activeFloorNodesConfig;
+        [SerializeField, Input]
+        internal TilesSetListConfig m_tilesEditConfig;
+        [SerializeField, Input]
+        internal HardEdgeConfig m_hardEdgeConfig;
+        [SerializeField, Input]
+        internal CountNodesConfig m_floorTexTypesConfig;
+        [SerializeField, Input]
+        internal CountNodesConfig m_activeFloorNodesConfig;
 
-        [SerializeField] internal ScriptableVector3 m_currentPosition;
+        [SerializeField, Input]
+        internal ScriptableVector3 m_currentPosition;
 
-        [SerializeField] internal ScriptableGrid m_sourceGrid;
-        [SerializeField] internal ScriptableGrid m_targetGrid;
+        [SerializeField, Input]
+        internal ScriptableGrid m_sourceGrid;
+        [SerializeField, Input]
+        internal ScriptableGrid m_targetGrid;
 
         public override string Name => nameof(AddDefaultCustomFlags);
         public static Type StaticFactoryType => typeof(AddDefaultCustomFlagsAction);

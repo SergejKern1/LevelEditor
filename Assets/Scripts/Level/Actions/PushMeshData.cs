@@ -4,13 +4,16 @@ using ScriptableUtility;
 using ScriptableUtility.ActionConfigs;
 using ScriptableUtility.Actions;
 using UnityEngine;
+using XNode.Attributes;
 
 namespace Level.Actions
 {
     public class PushMeshData : ScriptableBaseAction
     {
-        [SerializeField] internal ScriptableMeshData m_pushData;
-        [SerializeField] internal ScriptableMeshData m_targetData;
+        [SerializeField, Input]
+        internal ScriptableMeshData m_pushData;
+        [SerializeField, Input]
+        internal ScriptableMeshData m_targetData;
 
         public override string Name => nameof(PushMeshData);
         public static Type StaticFactoryType => typeof(PushMeshDataAction);

@@ -9,17 +9,23 @@ using ScriptableUtility.Actions;
 using ScriptableUtility.Variables.Reference;
 using ScriptableUtility.Variables.Scriptable;
 using UnityEngine;
+using XNode.Attributes;
 
 namespace Level.Actions
 {
     public class SelectTextureTypeFromTile : ScriptableBaseAction
     {
-        [SerializeField] internal TilesSetListConfig m_sourceConfig;
-        [SerializeField] internal LevelTextureConfig m_texConfig;
+        [SerializeField, Input]
+        internal TilesSetListConfig m_sourceConfig;
+        [SerializeField, Input]
+        internal LevelTextureConfig m_texConfig;
 
-        [SerializeField] internal ScriptableGrid m_grid;
-        [SerializeField] internal ScriptableVector3 m_currentPosition;
-        [SerializeField] internal ScriptableTilesSetFilter m_tileSetFilter;
+        [SerializeField, Input]
+        internal ScriptableGrid m_grid;
+        [SerializeField, Input]
+        internal ScriptableVector3 m_currentPosition;
+        [SerializeField, Input]
+        internal ScriptableTilesSetFilter m_tileSetFilter;
 
         public override string Name => nameof(SelectTextureTypeFromTile);
         public static Type StaticFactoryType => typeof(SelectTextureTypeFromTileAction);

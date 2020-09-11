@@ -4,6 +4,7 @@ using Level.Data;
 using ScriptableUtility;
 using ScriptableUtility.Variables;
 using UnityEngine;
+using XNode;
 
 namespace Level.ScriptableUtility
 {
@@ -45,6 +46,7 @@ namespace Level.ScriptableUtility
         IContext m_context;
 
 		public Type VariableType => typeof(TileMeshConfig.MeshSet);
+
         public TileMeshConfig.MeshSet Value => this.GetValue();
 
         // ReSharper disable ConvertToAutoPropertyWithPrivateSetter
@@ -65,6 +67,7 @@ namespace Level.ScriptableUtility
                 return cp?.Context;
             }
         }
+        public void __SetContext(IContext c) => m_context = c;
 
         public TileMeshConfig.MeshSet IntrinsicValue
         {
@@ -97,20 +100,10 @@ namespace Level.ScriptableUtility
             }
         }
 
-        public static void Init(this ref MeshSetReference @ref, IContext ctx)
-		{
-            if (@ref.ContextType != ReferenceContextType.Scriptable)
-                return;
-
-            if (@ref.Scriptable == null)
-            {
-                Debug.LogError("Scriptable null!");
-                return;
-            }
-
-            if (@ref.Scriptable.ContextType == ScriptableContextType.GameObjectContext)
-                MeshSetReference.SetContext(ref @ref, ctx);
-        }
+        public static void Init(this ref MeshSetReference @ref, IContext ctx) => 
+            @ref = @ref.InitInternal<MeshSetReference, TileMeshConfig.MeshSet>(ctx);
+        public static void Init(this ref MeshSetReference @ref, string fieldName, Node n, IContext ctx) => 
+            @ref = @ref.InitInternal<MeshSetReference, TileMeshConfig.MeshSet>(fieldName, n, ctx);
 
         public static MeshSetReference SetValue(this ref MeshSetReference @ref, TileMeshConfig.MeshSet val)
         {

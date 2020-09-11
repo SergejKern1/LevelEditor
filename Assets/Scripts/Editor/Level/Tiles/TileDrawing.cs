@@ -1,4 +1,8 @@
 using System;
+#if LUDIQ_PEEK
+using System.Reflection;
+#endif
+
 using Core.Editor.Utility;
 using Core.Events;
 using Core.Extensions;
@@ -200,11 +204,28 @@ namespace Editor.Level.Tiles
 
             e.Use();
 
+#if LUDIQ_PEEK
+            PeekFix();
+#endif
+
             if (!doSetTilesNow)
                 return;
 
             ApplyBrush(ref opDat, pos);
         }
+
+#if LUDIQ_PEEK
+        static FieldInfo m_peekPressPosition;
+        static void PeekFix()
+        {
+            if (m_peekPressPosition == null)
+            {
+                var type = typeof(Ludiq.Peek.Probe);
+                m_peekPressPosition = type.GetField("pressPosition", BindingFlags.NonPublic | BindingFlags.Static);
+            }
+            m_peekPressPosition?.SetValue(null, null);
+        }
+#endif
 
         static void ApplyBrush(ref TileDrawingOpData opDat, Vector3 pos)
         {

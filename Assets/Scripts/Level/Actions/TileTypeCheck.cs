@@ -4,23 +4,31 @@ using Level.ScriptableUtility;
 using Level.Tiles;
 using ScriptableUtility;
 using ScriptableUtility.ActionConfigs;
+using ScriptableUtility.ActionConfigs.Attributes;
 using ScriptableUtility.Actions;
 using ScriptableUtility.Variables.Reference;
 using ScriptableUtility.Variables.Scriptable;
 using UnityEngine;
+using XNode.Attributes;
 
 namespace Level.Actions
 {
     public class TileTypeCheck : ScriptableBaseAction
     {
-        [SerializeField] internal TilesSetListConfig m_sourceConfig;
-        [SerializeField] internal TileTypeIdentifier m_tileIdentifier;
+        [SerializeField, Input]
+        internal TilesSetListConfig m_sourceConfig;
+        [SerializeField, Input]
+        internal TileTypeIdentifier m_tileIdentifier;
 
-        [SerializeField] internal ScriptableGrid m_grid;
-        [SerializeField] internal ScriptableVector3 m_currentPosition;
+        [SerializeField, Input]
+        internal ScriptableGrid m_grid;
+        [SerializeField, Input]
+        internal ScriptableVector3 m_currentPosition;
 
-        [SerializeField] internal ScriptableBaseAction m_trueAction;
-        [SerializeField] internal ScriptableBaseAction m_falseAction;
+        [SerializeField, ActionOutput] 
+        internal ScriptableBaseAction m_trueAction;
+        [SerializeField, ActionOutput] 
+        internal ScriptableBaseAction m_falseAction;
 
         public override string Name => nameof(TileTypeCheck);
         public static Type StaticFactoryType => typeof(TileTypeCheckAction);

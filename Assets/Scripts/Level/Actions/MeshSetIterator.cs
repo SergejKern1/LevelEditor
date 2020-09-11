@@ -3,19 +3,24 @@ using Core.Interface;
 using Level.ScriptableUtility;
 using ScriptableUtility;
 using ScriptableUtility.ActionConfigs;
+using ScriptableUtility.ActionConfigs.Attributes;
 using ScriptableUtility.Actions;
 using ScriptableUtility.Variables.Reference;
 using ScriptableUtility.Variables.Scriptable;
 using UnityEngine;
+using XNode;
+using XNode.Attributes;
 
 namespace Level.Actions
 {
     public class MeshSetIterator : ScriptableBaseAction
     {
-        [SerializeField] internal ScriptableMeshSet m_meshSet;
-        [SerializeField] internal ScriptableUnityObject m_mesh;
+        [SerializeField, Input]
+        internal ScriptableMeshSet m_meshSet;
+        [SerializeField, Input]
+        internal ScriptableUnityObject m_mesh;
 
-        [SerializeField] internal  ScriptableBaseAction m_continueWith;
+        [SerializeField, ActionOutput] internal  ScriptableBaseAction m_continueWith;
 
         public override string Name => nameof(MeshSetIterator);
         public static Type StaticFactoryType => typeof(MeshSetIteratorAction);

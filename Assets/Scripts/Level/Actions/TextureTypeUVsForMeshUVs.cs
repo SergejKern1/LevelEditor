@@ -5,14 +5,18 @@ using ScriptableUtility;
 using ScriptableUtility.ActionConfigs;
 using ScriptableUtility.Actions;
 using UnityEngine;
+using XNode.Attributes;
 
 namespace Level.Actions
 {
     public class TextureTypeUVsForMeshUVs : ScriptableBaseAction
     {
-        [SerializeField] internal LevelTextureConfig m_texConfig;
-        [SerializeField] internal ScriptableMeshData m_meshData;
-        [SerializeField] internal ScriptableTilesSetFilter m_tileSetFilter;
+        [SerializeField, Input]
+        internal LevelTextureConfig m_texConfig;
+        [SerializeField, Input]
+        internal ScriptableMeshData m_meshData;
+        [SerializeField, Input]
+        internal ScriptableTilesSetFilter m_tileSetFilter;
 
         public override string Name => nameof(TextureTypeUVsForMeshUVs);
         public static Type StaticFactoryType => typeof(TextureTypeUVsForMeshUVsAction);

@@ -3,22 +3,28 @@ using Core.Interface;
 using Level.ScriptableUtility;
 using ScriptableUtility;
 using ScriptableUtility.ActionConfigs;
+using ScriptableUtility.ActionConfigs.Attributes;
 using ScriptableUtility.Actions;
 using ScriptableUtility.Variables.Reference;
 using ScriptableUtility.Variables.Scriptable;
 using UnityEngine;
 using UnityEngine.Serialization;
+using XNode;
+using XNode.Attributes;
 
 namespace Level.Tiles.Actions
 {
     public class GridIterator : ScriptableBaseAction
     {
-        [SerializeField] internal ScriptableGrid m_grid;
-        [SerializeField] internal ScriptableVector3 m_currentPosition;
+        [SerializeField, Input]
+        internal ScriptableGrid m_grid;
+        [SerializeField, Input]
+        internal ScriptableVector3 m_currentPosition;
         // f.e. if grid pos x is compared with x+1 we reduce iteration by 1
-        [SerializeField] internal Vector3Int m_reducedIteration;
+        [SerializeField, Input]
+        internal Vector3Int m_reducedIteration;
 
-        [FormerlySerializedAs("m_continueWith")]
+        [FormerlySerializedAs("m_continueWith"), ActionOutput]
         public ScriptableBaseAction ContinueWith;
 
         public override string Name => nameof(GridIterator);

@@ -4,6 +4,7 @@ using Level.Data;
 using ScriptableUtility;
 using ScriptableUtility.Variables;
 using UnityEngine;
+using XNode;
 
 namespace Level.ScriptableUtility
 {
@@ -65,6 +66,7 @@ namespace Level.ScriptableUtility
                 return cp?.Context;
             }
         }
+        public void __SetContext(IContext c) => m_context = c;
 
         public MeshData IntrinsicValue
         {
@@ -97,42 +99,14 @@ namespace Level.ScriptableUtility
             }
         }
 
-        public static void Init(this ref MeshDataReference @ref, IContext ctx)
-		{
-            if (@ref.ContextType != ReferenceContextType.Scriptable)
-                return;
+        public static void Init(this ref MeshDataReference @ref, IContext ctx) => 
+            @ref = @ref.InitInternal<MeshDataReference, MeshData>(ctx);
+        public static void Init(this ref MeshDataReference @ref, string fieldName, Node n, IContext ctx) => 
+            @ref = @ref.InitInternal<MeshDataReference, MeshData>(fieldName, n, ctx);
 
-            if (@ref.Scriptable == null)
-            {
-                Debug.LogError("Scriptable null!");
-                return;
-            }
-
-            if (@ref.Scriptable.ContextType == ScriptableContextType.GameObjectContext)
-                MeshDataReference.SetContext(ref @ref, ctx);
-        }
-
-        public static MeshDataReference SetValue(this ref MeshDataReference @ref, MeshData value)
+        public static MeshDataReference SetValue(this ref MeshDataReference @ref, MeshData val)
         {
-            if (@ref.ContextType == ReferenceContextType.Intrinsic)
-            {
-                @ref.IntrinsicValue = value;
-                return @ref;
-            }
-
-            if (@ref.Scriptable == null)
-            {
-                Debug.LogError("Scriptable null!");
-                return default;
-            }
-
-            if (@ref.Scriptable.ContextType == ScriptableContextType.GlobalContext)
-                @ref.Scriptable.GlobalValue = value;
-            else if (@ref.Context != null)
-                @ref.Scriptable.SetWithContext(@ref.Context, value);
-            else
-                Debug.LogError("Context null!");
-
+            @ref = (MeshDataReference) @ref.SetValueInternal(val);
             return @ref;
         }
     }

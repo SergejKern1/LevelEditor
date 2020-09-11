@@ -7,16 +7,22 @@ using ScriptableUtility.Actions;
 using ScriptableUtility.Variables.Reference;
 using ScriptableUtility.Variables.Scriptable;
 using UnityEngine;
+using XNode;
+using XNode.Attributes;
 
 namespace Level.Tiles.Actions
 {
     public class AddDestinationFlag : ScriptableBaseAction
     {
-        [SerializeField] internal TileTypeIdentifier m_resultTag;
-        [SerializeField] internal TilesSetListConfig m_destinationConfig;
+        [SerializeField, Input]
+        internal TileTypeIdentifier m_resultTag;
+        [SerializeField, Input]
+        internal TilesSetListConfig m_destinationConfig;
 
-        [SerializeField] internal ScriptableGrid m_resultGrid;
-        [SerializeField] internal ScriptableVector3 m_currentPosition;
+        [SerializeField, Input]
+        internal ScriptableGrid m_resultGrid;
+        [SerializeField, Input]
+        internal ScriptableVector3 m_currentPosition;
 
         public override string Name => nameof(AddDestinationFlag);
         public static Type StaticFactoryType => typeof(AddDestinationFlagAction);

@@ -8,25 +8,32 @@ using ScriptableUtility.Actions;
 using ScriptableUtility.Variables.Reference;
 using ScriptableUtility.Variables.Scriptable;
 using UnityEngine;
-
+using XNode.Attributes;
 using static Level.Tiles.TileProcessing;
 
 namespace Level.Tiles.Actions
 {
     public class PickMeshForConfiguration : ScriptableBaseAction
     {
-        [SerializeField] internal TilesSetListConfig m_primaryFilterSetListConfig;
-        [SerializeField] internal TileTypeIdentifier m_primaryFilterIdentifier;
+        [SerializeField, Input]
+        internal TilesSetListConfig m_primaryFilterSetListConfig;
+        [SerializeField, Input]
+        internal TileTypeIdentifier m_primaryFilterIdentifier;
 
-        [SerializeField] internal ScriptableTilesSetFilter m_filter;
-        [SerializeField] internal ScriptableGrid m_grid;
-        [SerializeField] internal ScriptableVector3 m_pos;
+        [SerializeField, Input]
+        internal ScriptableTilesSetFilter m_filter;
+        [SerializeField, Input]
+        internal ScriptableGrid m_grid;
+        [SerializeField, Input]
+        internal ScriptableVector3 m_pos;
 
-        [SerializeField] internal ScriptableMeshSet m_meshSet;
+        [SerializeField, Input]
+        internal ScriptableMeshSet m_meshSet;
 
         // todo: restrict to MeshConfigs
-        [SerializeField] internal ObjectReference m_meshConfig;
-        [SerializeField]  bool m_invertConfiguration;
+        [SerializeField, Input]
+        internal ObjectReference m_meshConfig;
+        [SerializeField] bool m_invertConfiguration;
 
         public override string Name => nameof(PickMeshForConfiguration);
         public static Type StaticFactoryType => typeof(PickMeshForConfigurationAction);
@@ -100,7 +107,7 @@ namespace Level.Tiles.Actions
 
             //tileTypes:
             var config = GetConfiguration(m_primaryFilter, m_tilesSetFilter, tiles, x, y, z).Configuration;
-            Debug.Log($"pos {m_pos.Value} config {config}");
+            //Debug.Log($"pos {m_pos.Value} config {config}");
             if (m_invertConfiguration)
                 config = ~config;
 

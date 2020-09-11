@@ -7,7 +7,7 @@ using ScriptableUtility.ActionConfigs;
 using ScriptableUtility.Actions;
 using ScriptableUtility.Variables.Reference;
 using UnityEngine;
-
+using XNode.Attributes;
 using Object = UnityEngine.Object;
 
 namespace Level.Actions
@@ -15,8 +15,10 @@ namespace Level.Actions
     // todo make general, use set Object
     public class SelectMeshConfig : ScriptableBaseAction
     {
-        [SerializeField] internal TileMeshConfig m_meshConfig;
-        [SerializeField] internal ObjectReference m_meshConfigVar;
+        [SerializeField, Input]
+        internal TileMeshConfig m_meshConfig;
+        [SerializeField, Input]
+        internal ObjectReference m_meshConfigVar;
 
         public override string Name => nameof(SelectMeshConfig);
         public static Type StaticFactoryType => typeof(SelectMeshConfigAction);

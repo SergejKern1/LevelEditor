@@ -6,23 +6,31 @@ using Level.Tiles;
 using Level.Tiles.Interface;
 using ScriptableUtility;
 using ScriptableUtility.ActionConfigs;
+using ScriptableUtility.ActionConfigs.Attributes;
 using ScriptableUtility.Actions;
 using ScriptableUtility.Variables.Reference;
 using ScriptableUtility.Variables.Scriptable;
 using UnityEngine;
+using XNode.Attributes;
 
 namespace Level.Actions
 {
     public class TileTypeSwitch : ScriptableBaseAction
     {
-        [SerializeField, HideInInspector] internal string m_name;
-        [SerializeField] internal TilesSetListConfig m_sourceConfig;
-        [SerializeField] internal RefITileConfig m_tileConfig;
+        [SerializeField, HideInInspector] 
+        internal string m_name;
+        [SerializeField, Input]
+        internal TilesSetListConfig m_sourceConfig;
+        [SerializeField, Input]
+        internal RefITileConfig m_tileConfig;
 
-        [SerializeField] internal ScriptableGrid m_grid;
-        [SerializeField] internal ScriptableVector3 m_currentPosition;
+        [SerializeField, Input]
+        internal ScriptableGrid m_grid;
+        [SerializeField, Input]
+        internal ScriptableVector3 m_currentPosition;
 
-        [SerializeField, HideInInspector] internal ScriptableBaseAction[] m_tileActions;
+        [SerializeField, HideInInspector, ActionListOutput] 
+        internal ScriptableBaseAction[] m_tileActions;
 
         public override string Name => m_name.IsNullOrEmpty()? nameof(TileTypeCheck) : m_name;
         public static Type StaticFactoryType => typeof(TileTypeCheckAction);

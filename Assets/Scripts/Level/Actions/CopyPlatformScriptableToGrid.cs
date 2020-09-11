@@ -8,15 +8,18 @@ using ScriptableUtility.Actions;
 
 using Level.PlatformLayer;
 using Level.ScriptableUtility;
-
+using XNode;
+using XNode.Attributes;
 using static Level.PlatformLayer.Operations;
 
 namespace Level.Tiles.Actions
 {
     public class CopyPlatformScriptableToGrid : ScriptableBaseAction
     {
-        [SerializeField] internal PlatformLayerScriptable m_platform;
-        [SerializeField] internal ScriptableGrid m_grid;
+        [SerializeField, Input]
+        internal PlatformLayerScriptable m_platform;
+        [SerializeField, Input]
+        internal ScriptableGrid m_grid;
 
         public override string Name => nameof(CopyPlatformScriptableToGrid);
         public static Type StaticFactoryType => typeof(CopyPlatformScriptableToGridAction);

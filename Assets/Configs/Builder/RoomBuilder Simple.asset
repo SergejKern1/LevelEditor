@@ -134,7 +134,7 @@ MonoBehaviour:
     Icon: {fileID: 0}
   m_texConfig: {fileID: 11400000, guid: c0a39a8faf9360341a7ee890cd487e31, type: 2}
   m_meshData: {fileID: 11400000, guid: 674f82dea94674948b12929373c7df93, type: 2}
-  m_tileSetFilter: {fileID: 0}
+  m_tileSetFilter: {fileID: 11400000, guid: 7833317e32827d949827c47cb83fa312, type: 2}
 --- !u!114 &-1810462405328556172
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -218,7 +218,7 @@ MonoBehaviour:
     Icon: {fileID: 0}
   m_texConfig: {fileID: 11400000, guid: c0a39a8faf9360341a7ee890cd487e31, type: 2}
   m_meshData: {fileID: 11400000, guid: 674f82dea94674948b12929373c7df93, type: 2}
-  m_tileSetFilter: {fileID: 0}
+  m_tileSetFilter: {fileID: 11400000, guid: 7833317e32827d949827c47cb83fa312, type: 2}
 --- !u!114 &2322319616365445419
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -239,9 +239,9 @@ MonoBehaviour:
     Icon: {fileID: 0}
   m_actions:
   - {fileID: 8485218332166069976}
+  - {fileID: 7395125115817762957}
   - {fileID: -1984228819902773605}
   - {fileID: 8776558146105837212}
-  - {fileID: 7395125115817762957}
   m_name: Wall Mesh
 --- !u!114 &5917307710298993697
 MonoBehaviour:
@@ -290,11 +290,12 @@ MonoBehaviour:
     UseColor: 0
     GUIColor: {r: 1, g: 1, b: 1, a: 1}
     Icon: {fileID: 0}
-  m_sourceConfig: {fileID: 0}
-  m_texConfig: {fileID: 0}
-  m_grid: {fileID: 0}
-  m_currentPosition: {fileID: 0}
-  m_tileSetFilter: {fileID: 0}
+  m_sourceConfig: {fileID: 11400000, guid: dfa48f1d301d1ca44afb081321a1d4da, type: 2}
+  m_texConfig: {fileID: 11400000, guid: c0a39a8faf9360341a7ee890cd487e31, type: 2}
+  m_grid: {fileID: 11400000, guid: 18fed5700ae9bba4b92a574f3db056a2, type: 2}
+  m_currentPosition: {fileID: 840613771059934576, guid: e65abf8910d78e34d8a2ecee7bf4f02b,
+    type: 2}
+  m_tileSetFilter: {fileID: 11400000, guid: 7833317e32827d949827c47cb83fa312, type: 2}
 --- !u!114 &7632125577750437126
 MonoBehaviour:
   m_ObjectHideFlags: 1

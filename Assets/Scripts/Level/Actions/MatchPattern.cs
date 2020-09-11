@@ -8,18 +8,23 @@ using ScriptableUtility.Actions;
 using ScriptableUtility.Variables.Reference;
 using ScriptableUtility.Variables.Scriptable;
 using UnityEngine;
-
+using XNode;
+using XNode.Attributes;
 using static Level.Tiles.TileProcessing;
 
 namespace Level.Tiles.Actions
 {
     public class MatchPattern : ScriptableBaseAction
     {
-        [SerializeField] internal TilesSetListConfig m_sourceConfig;
+        [SerializeField, Input]
+        internal TilesSetListConfig m_sourceConfig;
 
-        [SerializeField] internal ScriptableTilesSetFilter m_filter;
-        [SerializeField] internal ScriptableGrid m_grid;
-        [SerializeField] internal ScriptableVector3 m_pos;
+        [SerializeField, Input]
+        internal ScriptableTilesSetFilter m_filter;
+        [SerializeField, Input]
+        internal ScriptableGrid m_grid;
+        [SerializeField, Input]
+        internal ScriptableVector3 m_pos;
 
         internal TileTypeIdentifier Identifier;
         internal int Configuration;

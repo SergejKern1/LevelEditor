@@ -4,6 +4,7 @@ using Level.Tiles;
 using ScriptableUtility;
 using ScriptableUtility.Variables;
 using UnityEngine;
+using XNode;
 
 namespace Level.ScriptableUtility
 {
@@ -65,6 +66,7 @@ namespace Level.ScriptableUtility
                 return cp?.Context;
             }
         }
+        public void __SetContext(IContext c) => m_context = c;
 
         public TilesSetFilter IntrinsicValue
         {
@@ -97,20 +99,10 @@ namespace Level.ScriptableUtility
             }
         }
 
-        public static void Init(this ref TilesSetFilterReference @ref, IContext ctx)
-		{
-            if (@ref.ContextType != ReferenceContextType.Scriptable)
-                return;
-
-            if (@ref.Scriptable == null)
-            {
-                Debug.LogError("Scriptable null!");
-                return;
-            }
-
-            if (@ref.Scriptable.ContextType == ScriptableContextType.GameObjectContext)
-                TilesSetFilterReference.SetContext(ref @ref, ctx);
-        }
+        public static void Init(this ref TilesSetFilterReference @ref, IContext ctx) => 
+            @ref = @ref.InitInternal<TilesSetFilterReference, TilesSetFilter>(ctx);
+        public static void Init(this ref TilesSetFilterReference @ref, string fieldName, Node n, IContext ctx) => 
+            @ref = @ref.InitInternal<TilesSetFilterReference, TilesSetFilter>(fieldName, n, ctx);
 
         public static TilesSetFilterReference SetValue(this ref TilesSetFilterReference @ref, TilesSetFilter val)
         {
