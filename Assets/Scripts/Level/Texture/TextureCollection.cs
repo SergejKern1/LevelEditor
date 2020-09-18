@@ -108,9 +108,6 @@ namespace Level.Texture
                 FloorVariations = new List<TextureData>();
             if (WallVariations == null)
                 WallVariations = new List<TextureData>();
-
-            foreach (var dat in this)
-                dat.UpgradeToArray();
         }
 
         public bool Has(Texture2D tex, HashSet<EAtlasType> types)
@@ -128,11 +125,7 @@ namespace Level.Texture
 
         public string TileName => Name;
         public Color TileColor => DebugColor;
-        public Texture2D PreviewTex
-        {
-            get => FloorVariations.IsNullOrEmpty() ? null : FloorVariations[0].DiffuseTex;
-            set { }
-        }
+        public Texture2D PreviewTex => FloorVariations.IsNullOrEmpty() ? null : FloorVariations[0].DiffuseTex;
     }
 
 }

@@ -1,4 +1,5 @@
 ﻿using System;
+using Core.Editor.Interface;
 using Core.Types;
 using Core.Unity.Utility.GUITools;
 using Level.Data;
@@ -29,18 +30,10 @@ namespace Editor.Level.Tools
         const string k_editorPrefSizeToolsAffectRoom = "RoomEditor.SizeToolsAffectRoom";
         #endregion
 
-        public static void Init_SizePositionTools(AnimBool showTools, Object editorObj)
+        public static void Init_SizePositionTools(AnimBool showTools, IRepaintable r)
         {
             showTools.valueChanged.RemoveAllListeners();
-
-            var editor = editorObj as UnityEditor.Editor;
-            var editorW = editorObj as EditorWindow;
-
-            if (editorW != null)
-                showTools.valueChanged.AddListener(editorW.Repaint);
-            else if (editor != null)
-                showTools.valueChanged.AddListener(editor.Repaint);
-            else throw new ArgumentException($"{editorObj} expected to be of type {nameof(Editor)} or {nameof(EditorWindow)}");
+            showTools.valueChanged.AddListener(r.Repaint);
 
             showTools.target = EditorPrefs.GetBool(k_editorPrefShowSizeTools, false);
             m_sizeToolsAffectRoom = EditorPrefs.GetBool(k_editorPrefSizeToolsAffectRoom, false);

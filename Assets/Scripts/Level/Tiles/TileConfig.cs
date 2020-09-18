@@ -9,6 +9,8 @@ namespace Level.Tiles
     [CreateAssetMenu(menuName = "Level/Tiles/DataConfig")]
     public class TileConfig : ScriptableObject, ITileConfig
     {
+        const int k_defaultPreviewTexSize = 16;
+
         [Serializable]
         public class TilesData : ITilesData
         {
@@ -27,7 +29,24 @@ namespace Level.Tiles
                 get => m_tileColor;
                 set => m_tileColor = value;
             }
-            public Texture2D PreviewTex { get; set; }
+            public Texture2D PreviewTex 
+            {
+                get
+                {
+                    if (m_previewTex != null)
+                        return m_previewTex;
+
+                    m_previewTex = new Texture2D(k_defaultPreviewTexSize, k_defaultPreviewTexSize);
+
+                    for (var x = 0; x < k_defaultPreviewTexSize; x++)
+                    for (var y = 0; y < k_defaultPreviewTexSize; y++)
+                        m_previewTex.SetPixel(x, y, TileColor);
+                    m_previewTex.Apply();
+                    return m_previewTex;
+                }
+            }
+
+            Texture2D m_previewTex;
         }
 
         // todo Tiles: limit maximum TileTypes

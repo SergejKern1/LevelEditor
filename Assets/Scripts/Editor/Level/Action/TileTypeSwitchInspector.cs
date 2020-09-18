@@ -1,4 +1,5 @@
-﻿using Level.Actions;
+﻿using Core.Editor.Inspector;
+using Level.Actions;
 using Level.Tiles.Interface;
 using ScriptableUtility.Editor;
 using ScriptableUtility.Editor.Actions;
@@ -8,11 +9,9 @@ using UnityEngine;
 namespace Editor.Level.Action
 {
     [CustomEditor(typeof(TileTypeSwitch))]
-    public class TileTypeSwitchInspector : ScriptableBaseActionInspector
+    public class TileTypeSwitchInspector : BaseInspector<TileTypeSwitchEditor>{}
+    public class TileTypeSwitchEditor : ScriptableBaseActionEditor<TileTypeSwitch>
     {
-        // ReSharper disable once InconsistentNaming
-        new TileTypeSwitch target => base.target as TileTypeSwitch;
-
         CommonActionEditorGUI.ActionMenuData m_menuData = CommonActionEditorGUI.ActionMenuData.Default;
         Vector2 m_scrollPos;
 
@@ -20,10 +19,9 @@ namespace Editor.Level.Action
 
         ITileConfig m_cacheTileConfig;
 
-        public override void Init()
+        public override void Init(object parentContainer)
         {
-            base.Init();
-
+            base.Init(parentContainer);
             InitActionListDataDefault(out m_actionsList, TileTypeSwitch.Editor_ActionProperty, "{0}");
             CreateMenu(ref m_menuData, (data) => OnTypeSelected(m_actionsList, data));
 
@@ -33,7 +31,7 @@ namespace Editor.Level.Action
         void SetLabels()
         {
             m_actionsList.CustomLabels = null;
-            m_cacheTileConfig = target.Editor_TileConfig;
+            m_cacheTileConfig = Target.Editor_TileConfig;
             if (m_cacheTileConfig == null)
                 return;
             m_actionsList.CustomLabels = new GUIContent[m_cacheTileConfig.Count];
@@ -41,18 +39,20 @@ namespace Editor.Level.Action
                 m_actionsList.CustomLabels[i] = new GUIContent(m_cacheTileConfig[i].TileName);
         }
 
-        public override void OnDisable()
+        public override void Terminate()
         {
-            base.OnDisable();
+            base.Terminate();
+
             ReleaseEditor(ref m_actionsList);
         }
 
-        public override void OnInspectorGUI()
+        public override void OnGUI(float width)
         {
             NameGUI(TileTypeSwitch.Editor_NameProperty);
-            DrawDefaultInspector();
+            if (ParentContainer is UnityEditor.Editor editor)
+                editor.DrawDefaultInspector();
 
-            if (m_cacheTileConfig != target.Editor_TileConfig)
+            if (m_cacheTileConfig != Target.Editor_TileConfig)
                 SetLabels();
 
             using (var scroll = new EditorGUILayout.ScrollViewScope(m_scrollPos))

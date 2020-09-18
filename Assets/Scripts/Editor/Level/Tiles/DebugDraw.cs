@@ -67,7 +67,7 @@ namespace Editor.Level.Tiles
             GetDebugDrawVertices(settings, center, out var v1, out var v2, out var v3, out var v4);
             GetDebugDrawColor(settings, tilesSetData, tile, out var faceCol, out var outlineCol);
 
-            var previewTex = GetPreviewTexture(tilesSetData, tile);
+            var previewTex = tilesSetData[tile].PreviewTex;
             if (settings.DrawDebugTiles)
                 Handles.DrawSolidRectangleWithOutline(new[] {v1, v2, v3, v4}, faceCol, outlineCol);
 
@@ -93,17 +93,6 @@ namespace Editor.Level.Tiles
             v2 = center + new Vector3(debugTileSize, -debugTileSize * settings.ZMult.y, -debugTileSize * settings.ZMult.z);
             v3 = center + new Vector3(debugTileSize, debugTileSize * settings.ZMult.y, debugTileSize * settings.ZMult.z);
             v4 = center + new Vector3(-debugTileSize, debugTileSize * settings.ZMult.y, debugTileSize * settings.ZMult.z);
-        }
-
-        static Texture2D GetPreviewTexture(TilesSetData tilesSetData, ushort tile)
-        {                
-            //todo: temp code:
-            var previewTex = new Texture2D(16, 16);
-            for (var x = 0; x < 16; x++)
-            for (var y = 0; y < 16; y++)
-                previewTex.SetPixel(x, y, tilesSetData[tile].TileColor);
-            previewTex.Apply();
-            return previewTex;
         }
 
         internal static void DrawPlatformBounds(IPlatformLayerSpatialData platform,

@@ -1,4 +1,5 @@
 ﻿using System;
+using Core.Editor.Inspector;
 using Editor.Level.Tiles;
 using Level.Data;
 using Level.PlatformLayer;
@@ -12,17 +13,25 @@ using static Core.Editor.Extensions.EditorExtensions;
 
 namespace Editor.Level.PlatformLayer
 {
-    [CustomEditor(typeof(PlatformLayerScriptable))]
-    public class PlatformLayerScriptableInspector : UnityEditor.Editor
+    public class PlatformEditor : BaseEditor<PlatformLayerConfig>
     {
-        Color m_drawBoundsColor = Color.green;
-
         // ReSharper disable once InconsistentNaming
-        new PlatformLayerScriptable target => base.target as PlatformLayerScriptable;
-        static PlatformLayerScriptableInspector m_currentInspector;
-
+        public override PlatformLayerConfig Target
+        {
+            get => base.Target;
+            set
+            {
+                if (base.Target == value)
+                    return;
+                base.Target = value;
+                m_tileDrawingData.Platform = value;
+                m_tileDrawingData.Tiles = value;
+                InitDebugData();
+            }
+        }
         static readonly SizeData k_roomSizeDat = new SizeData() { Size = new Vector3Int(int.MaxValue-1, int.MaxValue-1, int.MaxValue-1) };
-
+        
+        Color m_drawBoundsColor = Color.green;
         TileDrawingOpData m_tileDrawingData;
         readonly AnimBool m_showSizeTools = new AnimBool();
 
@@ -34,30 +43,29 @@ namespace Editor.Level.PlatformLayer
         bool m_2dMode;
         //int m_currentlySelected;
 
-        void OnEnable()
+        public override void Init(object parentContainer)
         {
-            if (m_currentInspector != null)
-                return;
+            base.Init(parentContainer);
+
             Init_SizePositionTools(m_showSizeTools, this);
 
             InitDebugData();
 
-            m_tileDrawingData.Platform = target;
-            m_tileDrawingData.Tiles = target;
+            m_tileDrawingData.Platform = Target;
+            m_tileDrawingData.Tiles = Target;
             Init_TilesMode(ref m_tileDrawingData, this);
 
-            m_currentInspector = this;
             m_func = sceneView => OnSceneGUI();
             SceneView.duringSceneGui += m_func;
         }
 
         void InitDebugData()
         {
-            m_drawBoundsColor = EditorPrefs_GetColor($"{nameof(PlatformLayerScriptableInspector)}.{nameof(m_drawBoundsColor)}");
+            m_drawBoundsColor = EditorPrefs_GetColor($"{nameof(PlatformLayerConfigInspector)}.{nameof(m_drawBoundsColor)}");
 
-            if (target == null)
+            if (Target == null)
                 return;
-            var set = target.TilesSet;
+            var set = Target.TilesSet;
             if (set == null)
                 return;
             var sets = set.TileDataSets;
@@ -69,24 +77,21 @@ namespace Editor.Level.PlatformLayer
             for (var i = 0; i < sets.Count; i++) m_debugData[i] = LoadDebugSettings(i);
         }
 
-        public void OnDisable()
+        public override void Terminate()
         {
-            if (m_currentInspector!= this)
-                return;
-            if (m_func == null)
-                return;
-
+            base.Terminate();
             // ReSharper disable once DelegateSubtraction
-            SceneView.duringSceneGui -= m_func;
+            if (m_func != null)
+                SceneView.duringSceneGui -= m_func;
             m_func = null;
-            m_currentInspector = null;
         }
 
-        public void OnSceneGUI()
+        void OnSceneGUI()
         {
-            if (target.TilesSet == null)
+            if (Target == null || Target.TilesSet == null)
                 return;
 
+            //Debug.Log($"PlatformLayer OnSceneGUI {Target.name}");
             if (SceneView.lastActiveSceneView != null)
                 m_2dMode = SceneView.lastActiveSceneView.in2DMode;
 
@@ -107,9 +112,9 @@ namespace Editor.Level.PlatformLayer
             if (e.type == EventType.Layout)
                 HandleUtility.AddDefaultControl(controlId);
 
-            SizeSceneGUI(m_sizePositionCategory, target, k_roomSizeDat);
+            SizeSceneGUI(m_sizePositionCategory, Target, k_roomSizeDat);
 
-            var groundPlane = new Plane(m_2dMode ? Vector3.back : Vector3.up, target.PositionOffset.y * (m_2dMode? Vector3.back : Vector3.up));
+            var groundPlane = new Plane(m_2dMode ? Vector3.back : Vector3.up, Target.PositionOffset.y * (m_2dMode? Vector3.back : Vector3.up));
             var ray = HandleUtility.GUIPointToWorldRay(new Vector2(e.mousePosition.x, e.mousePosition.y));
             // Camera.current.ScreenPointToRay(new Vector3(e.mousePosition.x, sceneView.position.height - e.mousePosition.y - 16, 0.0f));
             if (!groundPlane.Raycast(ray, out var distance))
@@ -124,16 +129,20 @@ namespace Editor.Level.PlatformLayer
             }
             SceneGUI_TilesMode(Event.current, ref m_tileDrawingData, wPos, cursorPos);
 
-            if (e.type != EventType.Repaint && e.type != EventType.Layout)
-                SceneView.RepaintAll();
+            //if (e.type!= EventType.Repaint && e.type!= EventType.Layout)
+            //{
+            //    Debug.Log("Repainting");
+            //    SceneView.RepaintAll();
+            //}
+
         }
 
         void SceneGUIDraw()
         {
-            var count = Mathf.Min(m_debugData.Length, target.TilesSet.TileDataSets.Count);
+            var count = Mathf.Min(m_debugData.Length, Target.TilesSet.TileDataSets.Count);
             for (var i = 0; i < count; i++)
             {
-                var set = target.TilesSet.TileDataSets[i];
+                var set = Target.TilesSet.TileDataSets[i];
                 var usingSet = (set.Mask & m_tileDrawingData.TileTypesMask) != 0;
                 var debug = m_debugData[i];
                 if (debug.DrawOnlyWhenUsing && !usingSet)
@@ -144,38 +153,43 @@ namespace Editor.Level.PlatformLayer
                     debug.Settings.YMult = new Vector3Int(0,0,1);
                     debug.Settings.ZMult = Vector3Int.up;
                 }
-                DebugDraw.DrawGeometryType(target, set, debug.Settings);
+                DebugDraw.DrawGeometryType(Target, set, debug.Settings);
             }
 
             if (m_2dMode)
                 return;
-            DebugDraw.DrawPlatformBounds(target, target.PositionOffset, target.GridSize, target.GridYSize, m_drawBoundsColor);
+            DebugDraw.DrawPlatformBounds(Target, Target.PositionOffset, Target.GridSize, Target.GridYSize, m_drawBoundsColor);
         }
 
-        public override void OnInspectorGUI()
+        public override void OnGUI(float w)
         {
+            if (Target == null)
+                return;
+            base.OnGUI(w);
+
             using (var check = new EditorGUI.ChangeCheckScope())
             {
                 m_drawBoundsColor = EditorGUILayout.ColorField("Bounds-Color: ", m_drawBoundsColor);
                 if (check.changed)
-                    EditorPrefs_SetColor($"{nameof(PlatformLayerScriptableInspector)}.{nameof(m_drawBoundsColor)}", 
+                    EditorPrefs_SetColor($"{nameof(PlatformLayerConfigInspector)}.{nameof(m_drawBoundsColor)}", 
                         m_drawBoundsColor);
-            }   
-            
-            base.OnInspectorGUI();
+            }
 
-            GUILayout.Label($"Position: {target.Position} Size: {target.Size}", EditorStyles.helpBox);
+            if (ParentContainer is UnityEditor.Editor ed)
+                ed.DrawDefaultInspector();
 
-            if (target.TilesSet == null)
+            GUILayout.Label($"Position: {Target.Position} Size: {Target.Size}", EditorStyles.helpBox);
+
+            if (Target.TilesSet == null)
                 return;
 
             SizeToolsCategoryGUI(ref m_sizePositionCategory);
-            //SizeToolsGUI(m_showSizeTools, target, target, k_roomSizeDat);
+            //SizeToolsGUI(m_showSizeTools, Target, Target, k_roomSizeDat);
 
-            var count = Mathf.Min(m_debugData.Length, target.TilesSet.TileDataSets.Count);
+            var count = Mathf.Min(m_debugData.Length, Target.TilesSet.TileDataSets.Count);
             for (var i = 0; i < count; i++)
             {
-                var set = target.TilesSet.TileDataSets[i];
+                var set = Target.TilesSet.TileDataSets[i];
                 bool active;
                 using (new EditorGUILayout.HorizontalScope(GUILayout.Width(Screen.width)))
                 {
@@ -204,7 +218,7 @@ namespace Editor.Level.PlatformLayer
             BrushTypeSizeGUI(ref m_tileDrawingData);
         }
 
-        void DebugSettings(ref DebugDraw.DebugDrawSettings settings)
+        static void DebugSettings(ref DebugDraw.DebugDrawSettings settings)
         {
             settings.DrawLabel = EditorGUILayout.Toggle("Draw Label", settings.DrawLabel);
             settings.DrawDots = EditorGUILayout.Toggle("Draw Dots", settings.DrawDots);
@@ -221,7 +235,7 @@ namespace Editor.Level.PlatformLayer
 
         void SaveDebugSettings(int i, TilesSetDebugData debugData)
         {
-            var pre = $"{nameof(PlatformLayerScriptableInspector)}.{nameof(m_debugData)}[{i}].";
+            var pre = $"{nameof(PlatformLayerConfigInspector)}.{nameof(m_debugData)}[{i}].";
             EditorPrefs.SetBool(pre + $"{nameof(TilesSetDebugData.DrawOnlyWhenUsing)}", debugData.DrawOnlyWhenUsing);
             EditorPrefs.SetBool(pre + $"{nameof(DebugDraw.DebugDrawSettings.DrawDots)}", debugData.Settings.DrawDots);
             EditorPrefs.SetBool(pre + $"{nameof(DebugDraw.DebugDrawSettings.DrawDebugTiles)}", debugData.Settings.DrawDebugTiles);
@@ -231,7 +245,7 @@ namespace Editor.Level.PlatformLayer
         }
         TilesSetDebugData LoadDebugSettings(int i)
         {
-            var pre = $"{nameof(PlatformLayerScriptableInspector)}." +
+            var pre = $"{nameof(PlatformLayerConfigInspector)}." +
                       $"{nameof(m_debugData)}[{i}].";
             var loaded = TilesSetDebugData.Default;
             loaded.DrawOnlyWhenUsing = EditorPrefs.GetBool(pre + $"{nameof(TilesSetDebugData.DrawOnlyWhenUsing)}", TilesSetDebugData.Default.DrawOnlyWhenUsing);
@@ -242,19 +256,5 @@ namespace Editor.Level.PlatformLayer
             loaded.Settings.ColorAlpha = EditorPrefs.GetFloat(pre + $"{nameof(DebugDraw.DebugDrawSettings.ColorAlpha)}", DebugDraw.DebugDrawSettings.Default.ColorAlpha);
             return loaded;
         }
-    }
-
-    public struct TilesSetDebugData
-    {
-        public bool Foldout;
-        public bool DrawOnlyWhenUsing;
-        public DebugDraw.DebugDrawSettings Settings;
-
-        public static TilesSetDebugData Default = new TilesSetDebugData()
-        {
-            Foldout = false,
-            DrawOnlyWhenUsing = true,
-            Settings = DebugDraw.DebugDrawSettings.Default
-        };
     }
 }

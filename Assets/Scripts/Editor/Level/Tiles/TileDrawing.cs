@@ -1,4 +1,5 @@
 using System;
+using Core.Editor.Interface;
 #if LUDIQ_PEEK
 using System.Reflection;
 #endif
@@ -11,10 +12,7 @@ using Level.Enums;
 using Level.PlatformLayer;
 
 //using Level.Operations;
-
-using Level.Room.Ext;
 using Level.Tiles;
-using Level.Tiles.Interface;
 using UnityEditor;
 using UnityEditor.AnimatedValues;
 using UnityEngine;
@@ -37,28 +35,19 @@ namespace Editor.Level.Tiles
         const string m_editorPrefShowLevelSettingEditor = "RoomEditor.ShowLevelSettingEditor";
         #endregion
 
-        const int k_defaultPreviewTexSize = 16;
         //todo: depending on GridSize and Setting?
         const float k_minBrushSize = 0.1f;
         const float k_maxBrushSize = 10f;
 
-        internal static void Init_TilesMode(ref TileDrawingOpData opDat, Object editorObj)
+        internal static void Init_TilesMode(ref TileDrawingOpData opDat, IRepaintable r)
         {
             opDat.PaintTileTypeLeft = 0; //EditorPrefs.GetInt(_EditorPrefPaintTileTypeLeft, (int)Tiles.Type.Floor);
             opDat.PaintTileTypeRight = 0; //EditorPrefs.GetInt(_EditorPrefPaintTileTypeRight, (int)Tiles.Type.AutoNonFloor);
             opDat.BrushSize = 1;
             opDat.ShowLevelSettingEditor = new AnimBool(false);
 
-            var editor = editorObj as UnityEditor.Editor;
-            var editorW = editorObj as EditorWindow;
-
             opDat.ShowLevelSettingEditor.valueChanged.RemoveAllListeners();
-
-            if (editorW != null)
-                opDat.ShowLevelSettingEditor.valueChanged.AddListener(editorW.Repaint);
-            else if (editor != null)
-                opDat.ShowLevelSettingEditor.valueChanged.AddListener(editor.Repaint);
-            else throw new ArgumentException($"{editorObj} expected to be of type {nameof(Editor)} or {nameof(EditorWindow)}");
+            opDat.ShowLevelSettingEditor.valueChanged.AddListener(r.Repaint);
 
             opDat.ShowLevelSettingEditor.target = EditorPrefs.GetBool(m_editorPrefShowLevelSettingEditor, true);
         }
@@ -189,9 +178,10 @@ namespace Editor.Level.Tiles
 
             if (e.control && e.type == EventType.ScrollWheel)
             {
-                e.Use();
                 opDat.BrushSize = Mathf.Clamp(opDat.BrushSize - 0.1f * e.delta.y, 0.5f, 10.0f);
+                e.Use();
 
+                //Debug.Log("Repainting");
                 SceneView.RepaintAll();
             }
 
@@ -504,8 +494,6 @@ namespace Editor.Level.Tiles
 
                 //Texture2D previewTex = null;
                 //var floorVar = current.FloorVariations;
-                current = GetPreviewTex(current);
-
                 var lIdx = tileSetData.GetTileIdx(opDat.PaintTileTypeLeft);
                 var rIdx = tileSetData.GetTileIdx(opDat.PaintTileTypeRight);
 
@@ -548,24 +536,6 @@ namespace Editor.Level.Tiles
 
             return active;
             //Debug.Log($"opDat-mask {opDat.TileTypesMask} tileSet-mask: {tileSetData.Mask} active: {active}");
-        }
-
-        static ITilesData GetPreviewTex(ITilesData current)
-        {
-            if (current.PreviewTex != null)
-                return current;
-
-            current.PreviewTex = new Texture2D(k_defaultPreviewTexSize, k_defaultPreviewTexSize);
-            // todo: remove this hacky thing
-            if (current.PreviewTex == null) 
-                return current;
-            
-            for (var x = 0; x < k_defaultPreviewTexSize; x++)
-            for (var y = 0; y < k_defaultPreviewTexSize; y++)
-                current.PreviewTex.SetPixel(x, y, current.TileColor);
-            current.PreviewTex.Apply();
-
-            return current;
         }
 
         //static LevelTextureConfig LevelTextureConfigGUI()

@@ -6,15 +6,14 @@ using UnityEngine;
 namespace Editor.Level.Tiles
 {
     [CustomEditor(typeof(TilesSetListConfig))]
-    public class TilesSetListConfigInspector : BaseInspector
+    public class TilesSetListConfigInspector : BaseInspector<TilesSetListConfigEditor> { }
+    
+    public class TilesSetListConfigEditor : BaseEditor<TilesSetListConfig>
     {
-        // ReSharper disable once InconsistentNaming
-        new TilesSetListConfig target => base.target as TilesSetListConfig;
-
-        public override void OnInspectorGUI()
+        public override void OnGUI(float width)
         {
-            base.OnInspectorGUI();
-            GUILayout.Label($"Digits {target.Editor_Digits}");
+            base.OnGUI(width);
+            GUILayout.Label($"Digits {Target.Editor_Digits}");
         }
     }
 }

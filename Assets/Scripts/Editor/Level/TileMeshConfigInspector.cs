@@ -9,13 +9,14 @@ using UnityEngine;
 namespace Editor.Level.Tiles
 {
     [CustomEditor(typeof(TileMeshConfig))]
-    public class TileMeshConfigInspector : BaseInspector
-    {
-        // ReSharper disable once InconsistentNaming
-        new TileMeshConfig target => base.target as TileMeshConfig;
+    public class TileMeshConfigInspector: BaseInspector<TileMeshConfigEditor> { }
 
-        public override void OnInspectorGUI()
+    public class TileMeshConfigEditor : BaseEditor<TileMeshConfig>
+    {
+        public override void OnGUI(float width)
         {
+            base.OnGUI(width);
+
             for (var i = 0; i < 16; i++)
             {
                 //ref var meshData = ref target.Editor_Get(i);
@@ -41,13 +42,13 @@ namespace Editor.Level.Tiles
 
                     using (new EditorGUILayout.VerticalScope())
                     {
-                        var prop = serializedObject.FindProperty(TileMeshConfig.Editor_ConfigDataPropName)
+                        var prop = SerializedObject.FindProperty(TileMeshConfig.Editor_ConfigDataPropName)
                             .GetArrayElementAtIndex(i).FindPropertyRelative(nameof(TileMeshConfig.MeshSet.Meshes));
                         using (var check = new EditorGUI.ChangeCheckScope())
                         {
                             EditorGUILayout.PropertyField(prop);
                             if (check.changed)
-                                serializedObject.ApplyModifiedProperties();
+                                SerializedObject.ApplyModifiedProperties();
                         }
                     }
                 }

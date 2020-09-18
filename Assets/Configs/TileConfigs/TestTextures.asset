@@ -39,7 +39,7 @@ MonoBehaviour:
     UseEdgeOnlyForTexTypeChanges: 0
     ForceHardEdge: 0
   - Name: Grass
-    DebugColor: {r: 0.79607844, g: 0.7232822, b: 0.48481178, a: 1}
+    DebugColor: {r: 0, g: 1, b: 0.15034914, a: 1}
     FloorVariations:
     - DiffuseTex: {fileID: 0}
       m_textures:

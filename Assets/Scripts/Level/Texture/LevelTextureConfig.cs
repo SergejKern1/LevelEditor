@@ -352,8 +352,6 @@ namespace Level.Texture
         {
             foreach (var dat in LevelTextureCollections)
                 dat.OnEnable();
-            foreach (var dat in Transitions)
-                dat.UpgradeToArray();
         }
 
 

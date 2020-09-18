@@ -8,7 +8,6 @@ using ScriptableUtility.Actions;
 using ScriptableUtility.Variables.Reference;
 using ScriptableUtility.Variables.Scriptable;
 using UnityEngine;
-using XNode;
 using XNode.Attributes;
 using static Level.Tiles.TileProcessing;
 
@@ -20,6 +19,8 @@ namespace Level.Tiles.Actions
         internal TilesSetListConfig m_tilesSetListConfig;
         [SerializeField, Input]
         internal TileTypeIdentifier m_floorNode;
+        [SerializeField, Input]
+        internal TileTypeIdentifier m_wallNode;
         [SerializeField, Input]
         internal LevelTextureConfig m_texTypeConfig;
 
@@ -53,8 +54,12 @@ namespace Level.Tiles.Actions
             var floorTexTypesSet = m_tilesEditConfig.GetSet(m_floorTexTypesConfig);
             var activeFloorNodesSet = m_tilesEditConfig.GetSet(m_activeFloorNodesConfig);
 
-            return new AddDefaultCustomFlagsAction(m_tilesSetListConfig, m_floorNode, m_texTypeConfig, pos, grid, 
-                editGrid, hardEdgeSet, floorTexTypesSet, activeFloorNodesSet);
+            return new AddDefaultCustomFlagsAction(m_tilesSetListConfig, 
+                m_floorNode, m_wallNode, 
+                m_texTypeConfig, 
+                pos, grid, 
+                editGrid, 
+                hardEdgeSet, floorTexTypesSet, activeFloorNodesSet);
         }
     }
 
@@ -62,6 +67,8 @@ namespace Level.Tiles.Actions
     {
         readonly TilesSetListConfig m_tilesSetListConfig;
         readonly TileTypeIdentifier m_floorNode;
+        readonly TileTypeIdentifier m_wallNode;
+
         readonly LevelTextureConfig m_texTypeConfig;
 
         readonly Vector3Reference m_pos;
@@ -71,7 +78,10 @@ namespace Level.Tiles.Actions
         readonly TilesSetData m_floorTexTypesSet;
         readonly TilesSetData m_activeFloorNodesSet;
 
-        public AddDefaultCustomFlagsAction(TilesSetListConfig config, TileTypeIdentifier floorNode, LevelTextureConfig texTypeConfig,
+        public AddDefaultCustomFlagsAction(TilesSetListConfig config, 
+            TileTypeIdentifier floorNode, TileTypeIdentifier wallNode, 
+            LevelTextureConfig texTypeConfig,
+
             Vector3Reference pos,
             GridReference sourceGrid, 
             GridReference targetGrid, 
@@ -81,6 +91,7 @@ namespace Level.Tiles.Actions
         {
             m_tilesSetListConfig = config;
             m_floorNode = floorNode;
+            m_wallNode = wallNode;
             m_texTypeConfig = texTypeConfig;
 
             m_pos = pos;
@@ -101,15 +112,18 @@ namespace Level.Tiles.Actions
             var activeFloorNodes = 0;
             // how many 0-4 different texture-types do we have for floor nodes:
             var floorTexTypes = 4;
+            // how many 0-4 different texture-types do we have for wall nodes:
+            var wallTexTypes = 4;
+
             var forceHardEdge = false;
 
-            CollectNodeInfo(pos, ref activeFloorNodes, ref forceHardEdge, ref floorTexTypes, ref equalNodesGeoType);
+            CollectNodeInfo(pos, ref activeFloorNodes, ref forceHardEdge, ref floorTexTypes, ref wallTexTypes, ref equalNodesGeoType);
 
-            var flag = GetHardEdgeState(equalNodesGeoType, floorTexTypes, activeFloorNodes, forceHardEdge);
+            var flag = GetHardEdgeState(equalNodesGeoType, floorTexTypes,wallTexTypes, activeFloorNodes, forceHardEdge);
             UpdateGrid(pos, flag, floorTexTypes, activeFloorNodes);
         }
 
-        void CollectNodeInfo(Vector3 pos, ref int activeFloorNodes, ref bool forceHardEdge, ref int floorTexTypes, ref int equalNodesGeoType)
+        void CollectNodeInfo(Vector3 pos, ref int activeFloorNodes, ref bool forceHardEdge, ref int floorTexTypes, ref int wallTexTypes, ref int equalNodesGeoType)
         {
             var x = (int) pos.x;
             var y = (int) pos.y;
@@ -128,15 +142,7 @@ namespace Level.Tiles.Actions
                 var equalsInTexType = false;
 
                 var nodeAGeoType = geoDatSet.GetTileIdx(nodeA);
-                var nodeATexType = ushort.MaxValue;
-                if (nodeAGeoType == m_floorNode.TileIdx)
-                {
-                    ++activeFloorNodes;
-                    nodeATexType = texSet.GetTileIdx(nodeA);
-                    if (m_texTypeConfig != null)
-                        forceHardEdge |= m_texTypeConfig.IsForce(nodeATexType);
-                }
-                else --floorTexTypes;
+                var nodeATexType = texSet.GetTileIdx(nodeA);
 
                 for (var nodeBOffIdx = nodeAOffIdx + 1; nodeBOffIdx < IterationOffset.Length; nodeBOffIdx++)
                 {
@@ -146,14 +152,27 @@ namespace Level.Tiles.Actions
                     var nodeBGeoType = geoDatSet.GetTileIdx(nodeB);
                     var nodeBTexType = texSet.GetTileIdx(nodeB);
 
-                    if (nodeBGeoType == m_floorNode.TileIdx)
-                        equalsInTexType |= (nodeATexType == nodeBTexType);
-                    if (nodeAGeoType == nodeBGeoType)
-                        ++equalNodesGeoType;
+                    if (nodeAGeoType != nodeBGeoType) 
+                        continue;
+
+                    ++equalNodesGeoType;
+                    equalsInTexType |= (nodeATexType == nodeBTexType);
                 }
 
-                if (equalsInTexType)
+                var isFloor = nodeAGeoType == m_floorNode.TileIdx;
+                var isWall = nodeAGeoType == m_wallNode.TileIdx;
+
+                if (isFloor)
+                {
+                    ++activeFloorNodes;
+                    if (m_texTypeConfig != null)
+                        forceHardEdge |= m_texTypeConfig.IsForce(nodeATexType);
+                }
+
+                if (!isFloor || equalsInTexType) 
                     --floorTexTypes;
+                if (!isWall || equalsInTexType) 
+                    --wallTexTypes;
             }
         }
 
@@ -171,15 +190,17 @@ namespace Level.Tiles.Actions
             m_targetGrid.Value[x, y, z] = tileData;
         }
 
-        static HardEdgeState GetHardEdgeState(int equalNodesGeoType, int floorTexTypes, int activeFloorNodes,
+        static HardEdgeState GetHardEdgeState(int equalNodesGeoType, 
+            int floorTexTypes, int wallTexTypes,
+            int activeFloorNodes,
             bool forceHardEdge)
         {
             var allNodesEqualGeoType = equalNodesGeoType == 6;
             var multipleTexAndGeometryTypes = floorTexTypes > 1 && !allNodesEqualGeoType;
-            var tooManyFloorTexTypes = floorTexTypes > 2;
+            var tooManyTexTypes = floorTexTypes > 2 || (wallTexTypes > 1 && !allNodesEqualGeoType);
             var tooManyGeoTypes = equalNodesGeoType <= 1;
 
-            var hard = tooManyFloorTexTypes || multipleTexAndGeometryTypes || tooManyGeoTypes;
+            var hard = tooManyTexTypes || multipleTexAndGeometryTypes || tooManyGeoTypes;
             // when we have 2 activeFloorNodes or all node types are equal we don't have diagonal edges anyway, so it breaks the force-hard-edge propagation
             var breakHard = !hard && (activeFloorNodes == 2 || allNodesEqualGeoType);
 

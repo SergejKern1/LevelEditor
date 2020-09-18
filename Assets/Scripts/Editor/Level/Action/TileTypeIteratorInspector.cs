@@ -1,4 +1,5 @@
-﻿using Level.Tiles.Actions;
+﻿using Core.Editor.Inspector;
+using Level.Tiles.Actions;
 using ScriptableUtility.Editor;
 using ScriptableUtility.Editor.Actions;
 using UnityEditor;
@@ -7,30 +8,29 @@ using UnityEditor;
 namespace Editor.Level.Action
 {
     [CustomEditor(typeof(TileTypeIterator))]
-    public class TileTypeIteratorInspector : ScriptableBaseActionInspector
+    public class TileTypeIteratorInspector : BaseInspector<TileTypeIteratorEditor>{}
+    public class TileTypeIteratorEditor : ScriptableBaseActionEditor<TileTypeIterator>
     {
-        // ReSharper disable once InconsistentNaming
-        new TileTypeIterator target => base.target as TileTypeIterator;
-
         CommonActionEditorGUI.ActionMenuData m_menuData;
         CommonActionEditorGUI.ActionData m_actionData;
 
-        public override void OnDisable()
+        public override void Terminate()
         {
-            base.OnDisable();
+            base.Terminate();
             ReleaseEditor(ref m_actionData);
         }
 
-        public override void Init()
+        public override void Init(object parentContainer)
         {
-            base.Init();
+            base.Init(parentContainer);
+
             InitActionDataDefault(out m_actionData, "Continue with", TileTypeIterator.Editor_ContinueWithPropName);
             CreateMenu(ref m_menuData, (data) => OnTypeSelected(m_actionData, data));
         }
 
-        public override void OnInspectorGUI()
+        public override void OnGUI(float width)
         {
-            base.OnInspectorGUI();
+            base.OnGUI(width);
             DefaultActionGUI(ref m_actionData, ref m_menuData);
         }
     }

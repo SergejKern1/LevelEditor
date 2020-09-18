@@ -70,60 +70,39 @@ namespace Level.Texture
     [Serializable]
     public class TextureData
     {
-        public Texture2D DiffuseTex;
-
         [FormerlySerializedAs("Textures")]
         [SerializeField]
         Texture2D[] m_textures = new Texture2D[(int)EAtlasType.Length];
 
         public Vector2 UVOffset;
         public ETexType Type;
+        public Texture2D DiffuseTex => m_textures[(int) EAtlasType.Default];
 
         public bool IsSet()
         {
-            if (DiffuseTex != null) return true;
-
             return m_textures != null
                    && m_textures.IsIndexInRange((int)EAtlasType.Default)
                    && m_textures[(int)EAtlasType.Default] != null;
         }
         public Vector2Int TileDimension() { return Utility.TileDimension(Type); }
-        public Texture2D GetTexture(EAtlasType atlasType = EAtlasType.Default)
-        {
-            if (atlasType == EAtlasType.Default && DiffuseTex != null) return DiffuseTex;
+        public Texture2D GetTexture(EAtlasType atlasType = EAtlasType.Default) => 
+            m_textures[(int)atlasType];
 
-            return m_textures[(int)atlasType];
-        }
         public void SetTexture(EAtlasType atlasType, Texture2D tex)
         {
             m_textures[(int)atlasType] = tex;
             if (atlasType != EAtlasType.Default || tex != null)
                 return;
             Type = ETexType.Invalid;
-            DiffuseTex = null;
         }
+
         public void Has(Texture2D tex, HashSet<EAtlasType> types)
         {
-            if (DiffuseTex == tex)
-                types.Add(EAtlasType.Default);
-
             for (var i = 0; i < m_textures.Length; i++)
             {
                 if (m_textures[i] == tex && !types.Contains((EAtlasType)i))
                     types.Add((EAtlasType)i);
             }
-        }
-
-        public void UpgradeToArray()
-        {
-            if (m_textures?.Length == (int)EAtlasType.Length && !m_textures.IsNullOrEmpty())
-            {
-                DiffuseTex = null;
-                return;
-            }
-            m_textures = new Texture2D[(int)EAtlasType.Length];
-            m_textures[(int)EAtlasType.Default] = DiffuseTex;
-            DiffuseTex = null;
         }
     }
 

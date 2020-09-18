@@ -1,24 +1,35 @@
+using Core.Editor.Inspector;
 using Core.Events;
 using Core.Unity.Extensions;
 using Editor.Level.Tiles;
 using Level.Data;
+using Level.PlatformLayer;
+using Level.PlatformLayer.Interface;
 using Level.Room;
 using ScriptableUtility;
-using ScriptableUtility.Actions;
 using ScriptableUtility.Editor.Actions;
 using UnityEditor;
 using UnityEngine;
+
 using static ScriptableUtility.Editor.CommonActionEditorGUI;
 
 namespace Editor.Level.Room
 {
     [CustomEditor(typeof(RoomBuilder))]
-    public class RoomBuilderInspector : ScriptableBaseActionInspector, IEventListener<TileDrawing.TilesDrawn>
+    public class RoomBuilderInspector : BaseInspector<RoomBuilderEditor>{}
+    public class RoomBuilderEditor : BaseActionEditor<RoomBuilder>, IEventListener<TileDrawing.TilesDrawn>
     {
-        public static RoomBuilderInspector CurrentInspector;
-
-        // ReSharper disable once InconsistentNaming
-        new RoomBuilder target => base.target as RoomBuilder;
+        public override RoomBuilder Target
+        {
+            get => base.Target;
+            set
+            {
+                if (base.Target == value)
+                    return;
+                base.Target = value;
+                InitTarget();
+            }
+        }
 
         ActionMenuData m_menu = ActionMenuData.Default;
 
@@ -27,12 +38,36 @@ namespace Editor.Level.Room
         ActionData m_actionData;
 
         GameObject m_previewObject;
-        ContextComponent m_previewContext;
+        IContext m_previewContext;
         Mesh m_previewMesh;
+        PlatformLayerConfig m_platformLayer;
+
+        bool BuildValid => m_platformLayer != null;
+
+        public override void Init(object parentEditor)
+        {
+            base.Init(parentEditor);
+
+            InitActionDataDefault(out m_actionData, "Action", nameof(RoomBuilder.Action));
+            CreateMenu(ref m_menu, (data) => OnTypeSelected(m_actionData, data));
+
+            EventMessenger.AddListener<TileDrawing.TilesDrawn>(this);
+
+            InitTarget();
+        }
+
+        void InitTarget()
+        {
+            if (Target == null) return;
+            Target.MeshData.GlobalValue = MeshData.Default;
+            Target.TempMeshData.GlobalValue = MeshData.Default;
+        }
 
         #region UnityMethods
-        public override void OnDisable()
+
+        public override void Terminate()
         {
+            base.Terminate();
             ReleaseEditor(ref m_actionData);
             if (m_previewObject != null)
                 m_previewObject.DestroyEx();
@@ -45,10 +80,11 @@ namespace Editor.Level.Room
             EventMessenger.RemoveListener<TileDrawing.TilesDrawn>(this);
         }
 
-        public override void OnInspectorGUI()
+        public override void OnGUI(float width)
         {
-            base.OnInspectorGUI();
-            CurrentInspector = this;
+            if (base.Target == null)
+                return;
+            base.OnGUI(width);
 
             using (var scroll = new EditorGUILayout.ScrollViewScope(m_scrollPos))
             using (var check = new EditorGUI.ChangeCheckScope())
@@ -61,29 +97,24 @@ namespace Editor.Level.Room
                 if (check.changed)
                     OnChanged();
             }
-
-            if (GUILayout.Button("Build")) 
-                OnBuild();
+            m_platformLayer = (PlatformLayerConfig) EditorGUILayout.ObjectField(m_platformLayer, 
+                typeof(PlatformLayerConfig), false);
+            using (new EditorGUI.DisabledGroupScope(!BuildValid))
+            {
+                if (GUILayout.Button("Build")) 
+                    OnBuild();
+            }
         }
 
         void OnBuild()
         {
+            if (!BuildValid)
+                return;
+
             InstantiatePreviewObjects();
-            target.MeshObject.GlobalValue = m_previewMesh;
-            target.MeshData.GlobalValue = MeshData.Default;
-            target.TempMeshData.GlobalValue = MeshData.Default;
-            
-            var prevAction = target.Action.CreateAction(m_previewContext);
-            if (prevAction is IDefaultAction def)
-                def.Invoke();
 
-            m_previewMesh.Clear();
-
-            m_previewMesh.vertices = target.MeshData.GlobalValue.Vertices.ToArray();
-            m_previewMesh.uv = target.MeshData.GlobalValue.UVs.ToArray();
-            m_previewMesh.triangles = target.MeshData.GlobalValue.Triangles.ToArray();
-            m_previewMesh.RecalculateNormals();
-            m_previewMesh.RecalculateTangents();
+            Target.BuildGrid(new IPlatformLayer[]{ m_platformLayer });
+            Target.Build(m_previewContext, 0, m_previewMesh);
         }
 
         void InstantiatePreviewObjects()
@@ -97,25 +128,25 @@ namespace Editor.Level.Room
                 mf.mesh = m_previewMesh;
 
                 var mr = m_previewObject.AddComponent<MeshRenderer>();
-                mr.sharedMaterial = target.Material;
+                mr.sharedMaterial = Target.Material;
 
-                m_previewContext = m_previewObject.AddComponent<ContextComponent>();
-                m_previewContext.Init();
+                var prevContext = m_previewObject.AddComponent<ContextComponent>();
+                prevContext.Init();
+                m_previewContext = prevContext;
             }
             else if (m_previewObject.TryGetComponent(out MeshFilter mf))
                 mf.mesh = m_previewMesh;
         }
         #endregion
 
-        public override void Init()
-        {
-            base.Init();
-            InitActionDataDefault(out m_actionData, "Action", nameof(RoomBuilder.Action));
-            CreateMenu(ref m_menu, (data) => OnTypeSelected(m_actionData, data));
-
-            EventMessenger.AddListener<TileDrawing.TilesDrawn>(this);
-        }
-
         public void OnEvent(TileDrawing.TilesDrawn eventType) => OnBuild();
+
+        public void SetInputData(GameObject go, PlatformLayerConfig plc, Mesh m, IContext c)
+        {
+            m_previewObject = go;
+            m_platformLayer = plc;
+            m_previewMesh = m;
+            m_previewContext = c;
+        }
     }
 }

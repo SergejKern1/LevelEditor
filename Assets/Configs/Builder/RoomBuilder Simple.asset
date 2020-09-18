@@ -68,6 +68,7 @@ MonoBehaviour:
     GUIColor: {r: 1, g: 1, b: 1, a: 1}
     Icon: {fileID: 0}
   m_actions:
+  - {fileID: 3481432183030207798}
   - {fileID: -8960372568406536361}
   m_name: Grid
 --- !u!114 &-5327035880950482365
@@ -170,11 +171,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dbd4921db9fcb9b4e91993ea3271bdc0, type: 3}
   m_Name: RoomBuilder Simple
   m_EditorClassIdentifier: 
+  m_nodes:
+  - {fileID: 1810166727039499381}
   MeshObject: {fileID: 5093361885710667068, guid: e65abf8910d78e34d8a2ecee7bf4f02b,
     type: 2}
   Action: {fileID: 904631515716010837}
   MeshData: {fileID: 11400000, guid: 673f1444f8247b0489504e52ef0852c3, type: 2}
   TempMeshData: {fileID: 11400000, guid: 674f82dea94674948b12929373c7df93, type: 2}
+  Grid: {fileID: 0}
   Material: {fileID: 2100000, guid: e7430d0ea47be2f48a6c45285118ed6a, type: 2}
 --- !u!114 &904631515716010837
 MonoBehaviour:
@@ -219,6 +223,33 @@ MonoBehaviour:
   m_texConfig: {fileID: 11400000, guid: c0a39a8faf9360341a7ee890cd487e31, type: 2}
   m_meshData: {fileID: 11400000, guid: 674f82dea94674948b12929373c7df93, type: 2}
   m_tileSetFilter: {fileID: 11400000, guid: 7833317e32827d949827c47cb83fa312, type: 2}
+--- !u!114 &1810166727039499381
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 75f998e05fd122944aedb1f1b708cbf6, type: 3}
+  m_Name: Entry
+  m_EditorClassIdentifier: 
+  m_graph: {fileID: 11400000}
+  m_position: {x: 0, y: 0}
+  m_ports:
+    m_keys:
+    - OUT
+    m_values:
+    - m_fieldName: OUT
+      m_node: {fileID: 1810166727039499381}
+      m_typeQualifiedName: ScriptableUtility.ActionConfigs.ScriptableActionConnector,
+        SK.ScriptableUtility, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+      m_connections: []
+      m_direction: 1
+      m_connectionType: 1
+      m_typeConstraint: 0
+      m_dynamic: 0
 --- !u!114 &2322319616365445419
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -243,6 +274,48 @@ MonoBehaviour:
   - {fileID: -1984228819902773605}
   - {fileID: 8776558146105837212}
   m_name: Wall Mesh
+--- !u!114 &3481432183030207798
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4ccb7cfe850fd7544914924fef1bd523, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Enabled: 1
+  DebugName: 
+  GUIData:
+    UseColor: 0
+    GUIColor: {r: 1, g: 1, b: 1, a: 1}
+    Icon: {fileID: 0}
+  m_grid: {fileID: 11400000, guid: 18fed5700ae9bba4b92a574f3db056a2, type: 2}
+  m_currentPosition: {fileID: 840613771059934576, guid: e65abf8910d78e34d8a2ecee7bf4f02b,
+    type: 2}
+  m_setListConfig: {fileID: 11400000, guid: dfa48f1d301d1ca44afb081321a1d4da, type: 2}
+  m_autoTile:
+    Config:
+      ObjectField: {fileID: 11400000, guid: 258a1128194b9ea4c8c9852e4bf90333, type: 2}
+      ResultType: 
+    TileIdx: 3
+  m_floorTile:
+    Config:
+      ObjectField: {fileID: 11400000, guid: 258a1128194b9ea4c8c9852e4bf90333, type: 2}
+      ResultType: 
+    TileIdx: 0
+  m_wallTile:
+    Config:
+      ObjectField: {fileID: 11400000, guid: 258a1128194b9ea4c8c9852e4bf90333, type: 2}
+      ResultType: 
+    TileIdx: 1
+  m_emptyTile:
+    Config:
+      ObjectField: {fileID: 11400000, guid: 258a1128194b9ea4c8c9852e4bf90333, type: 2}
+      ResultType: 
+    TileIdx: 2
 --- !u!114 &5917307710298993697
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -387,5 +460,4 @@ MonoBehaviour:
     UseColor: 0
     GUIColor: {r: 1, g: 1, b: 1, a: 1}
     Icon: {fileID: 0}
-  m_platform: {fileID: 11400000, guid: 4014fd2f3ba58d14a999aad8e3eeb432, type: 2}
   m_grid: {fileID: 11400000, guid: 18fed5700ae9bba4b92a574f3db056a2, type: 2}

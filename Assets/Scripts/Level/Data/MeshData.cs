@@ -18,5 +18,19 @@ namespace Level.Data
         public List<Vector3> Vertices;
         public List<Vector2> UVs;
         public List<int> Triangles;
+
+        public static void ClearData(ref MeshData md)
+        {
+            if (md.Vertices == null)
+            {
+                var defaultMeshData = Default;
+                md.Vertices = defaultMeshData.Vertices;
+                md.UVs = defaultMeshData.UVs;
+                md.Triangles = defaultMeshData.Triangles;
+            }
+            md.Vertices.Clear();
+            md.UVs.Clear();
+            md.Triangles.Clear();
+        }
     }
 }

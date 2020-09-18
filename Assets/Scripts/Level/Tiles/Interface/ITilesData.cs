@@ -8,7 +8,7 @@ namespace Level.Tiles.Interface
     {
         string TileName { get; }
         Color TileColor { get; }
-        Texture2D PreviewTex { get; set; }
+        Texture2D PreviewTex { get; }
     }
 
     [Serializable]
